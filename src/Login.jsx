@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './Login.css';
 import logo from './assets/srRed.png';
 import eyeIcon from './assets/ojo.png';
@@ -13,23 +14,31 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     try {
-      const response = await fetch('http://localhost:5002/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ usuario, password }),
+      const response = await axios.post('http://localhost:5002/auth/login', {
+        usuario,
+        password,
       });
-      const data = await response.json();
-      
-      if (data.status === "success") {
+
+      if (response.data.status === "success") {
         setMensaje("¡Login exitoso!");
         navigate('/admin');
       } else {
-        setMensaje(data.message);
+        setMensaje(response.data.message);
       }
     } catch (error) {
-      setMensaje("Error al conectar con el servidor.");
+      // Maneja errores con axios
+      if (error.response) {
+        // Errores de la respuesta del servidor (códigos de estado 4xx, 5xx)
+        setMensaje(error.response.data.message || "Error en la autenticación.");
+      } else if (error.request) {
+        // Errores relacionados con la solicitud, pero sin respuesta del servidor
+        setMensaje("Error al conectar con el servidor.");
+      } else {
+        // Otros errores
+        setMensaje("Ocurrió un error inesperado.");
+      }
     }
   };
 
