@@ -1,0 +1,128 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+    background-color: #b11e1e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+}
+
+.login-box {
+  background-color: #fff;
+  padding: 40px 30px;
+  border-radius: 10px;
+  color: #a6a6a6;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.logo {
+  width: 150px;
+  display: block;
+  margin: 0 auto 20px auto;
+}
+
+.logo img {
+  width: 100%;
+  height: auto;
+}
+
+.input-group {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.input-group input {
+  width: 90%; /* Ajuste del ancho al 90% para hacerlo más pequeño */
+  max-width: 350px; /* Máximo ancho para evitar que crezca demasiado en pantallas grandes */
+  padding: 10px;
+  padding-right: 40px;
+  border: none;
+  border-bottom: 2px solid #a6a6a6;
+  background: transparent;
+  color: #a6a6a6;
+  font-size: 16px;
+  margin: 0 auto;
+  display: block;
+}
+
+
+
+.toggle-password {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.toggle-password:hover {
+  opacity: 1;
+}
+
+.login-btn {
+  width: 90%; /* Ancho reducido al 90% */
+  max-width: 350px; /* Máximo ancho para pantallas grandes */
+  padding: 10px;
+  background-color: transparent;
+  border: 2px solid #a6a6a6;
+  color: #a6a6a6;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Botón flotante de acción (FAB) */
+.fab {
+  position: absolute;
+  bottom: -25px;
+  right: 20px;
+}
+
+.login-btn:hover {
+  background-color: #f3f3f3;
+}
+
+.error-message {
+  color: rgb(255, 115, 0);
+  margin-bottom: 15px;
+}
+
+@media (max-width: 768px) and (orientation: portrait) {
+  .login-box {
+    width: 100%;
+    padding: 15px;
+  }
+
+  .logo {
+    width: 40%;
+    margin-bottom: 30px;
+  }
+
+  .login-btn {
+    width: 70%;
+  }
+
+  .input-group input, .login-btn {
+    width: 100%; /* Ocupan todo el ancho disponible en pantallas pequeñas */
+    max-width: none;
+}
+}
