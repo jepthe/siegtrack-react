@@ -5,7 +5,7 @@ import './Login.css';
 import logo from './assets/srRed.png';
 import eyeIcon from './assets/ojo.png';
 
-export default function Login() {
+function Login() {
   const [usuario, setUsuario] = useState('');
   const [password, setPassword] = useState('');
   const [mensaje, setMensaje] = useState('');
@@ -23,7 +23,7 @@ export default function Login() {
 
       if (response.data.status === "success") {
         setMensaje("¡Login exitoso!");
-        navigate('/admin');
+        navigate('/home');
       } else {
         setMensaje(response.data.message);
       }
@@ -43,6 +43,7 @@ export default function Login() {
   };
 
   return (
+    <body class="login-page">
     <div className="login-container">
       <div className="login-box">
         <div className="logo">
@@ -80,5 +81,8 @@ export default function Login() {
         </form>
       </div>
     </div>
+    </body>
   );
 }
+
+export default Login;

@@ -1,0 +1,133 @@
+/* Estilos generales */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #ffffff;
+  }
+  
+  .homepage {/*fondo de la page*/
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  /* Barra superior */
+  .navbar {
+    background-color: #B11E1E;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    color: #ffffff;
+  }
+  
+  .logo-circle {
+    width: 50px;
+    height: 50px;
+    background-color: #ffffff;
+    border-radius: 50%;
+  }
+  
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-left: 20px;
+  }
+  
+  /* Contenido principal */
+  .main-content {
+    text-align: center;
+    margin: 40px 100px;
+  }
+  
+  .welcome-title {
+    font-size: 36px;
+    color: #111827;
+    font-weight: bold;
+  }
+  
+  .welcome-subtitle {
+    font-size: 18px;
+    color: #6b7280;
+  }
+  
+  /* Grid de tarjetas */
+  .card-grid {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+  }
+  
+  .card {
+    width: 300px;
+    height: 380px;
+    background-color: #ffffff;
+    border: 2px solid #e5e7eb;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+  }
+  
+  .card:hover {
+    transform: scale(1.05);
+  }
+  
+  .card-icon-background {
+    width: 100px;
+    height: 100px;
+    background-color: rgba(220, 38, 38, 0.1);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .card-icon {
+    width: 60px;
+    height: 60px;
+    background-color: #dc2626;
+    border-radius: 50%;
+  }
+  
+  .card-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #111827;
+  }
+  
+  .card-description {
+    font-size: 14px;
+    color: #6b7280;
+    text-align: center;
+    margin: 10px 0 20px;
+  }
+  
+  .card-button {
+    background: linear-gradient(to right, #dc2626, #ef4444);
+    color: #ffffff;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .card-button:hover {
+    background: linear-gradient(to right, #b91c1c, #dc2626);
+  }
+  
+  /* Footer */
+  .footer {
+    background-color: #f3f4f6;
+    text-align: center;
+    padding: 15px 0;
+    font-size: 14px;
+    color: #6b7280;
+  }
+  

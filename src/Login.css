@@ -6,18 +6,27 @@
 
 body {
   font-family: Arial, sans-serif;
-    background-color: #b11e1e;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
+}
+
+.login-page {/*fondo del login*/
+  background-color: #b11e1e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+  margin: 0;
+  position: relative;
+  
 }
 
 .login-container {
   width: 100%;
-  max-width: 400px;
+  max-width: 200px;
+  min-width: 400px;
   padding: 20px;
+  position: relative;
+  
 }
 
 .login-box {
