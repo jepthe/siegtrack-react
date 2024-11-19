@@ -3,10 +3,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const { testConnection } = require('./config/db');
+//importaciones de las rutas backend/routes/.js
 const authRoutes = require('./routes/auth');
 const capacitacionesRoutes = require('./routes/capacitaciones');
-const addCapacitacionRoutes = require('./routes/addCapacitacion');//nombre de .js
+const addCapacitacionRoutes = require('./routes/addCapacitacion');
 const editCapacitacionRoutes = require('./routes/editCapacitacion');
+const deleteCapacitacionRoutes = require('./routes/deleteCapacitacion');
 require('dotenv').config();
 
 const app = express();
@@ -20,6 +22,7 @@ app.use('/auth', authRoutes);
 app.use('/cap', capacitacionesRoutes);
 app.use('/addcap', addCapacitacionRoutes);
 app.use('/editcap', editCapacitacionRoutes);
+app.use('/deletecap', deleteCapacitacionRoutes);
 
 // Prueba de conexión y inicio del servidor
 const PORT = process.env.PORT || 5002;
