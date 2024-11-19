@@ -1,8 +1,12 @@
+// backend/server.js
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const { testConnection } = require('./config/db');
 const authRoutes = require('./routes/auth');
+const capacitacionesRoutes = require('./routes/capacitaciones');
+const addCapacitacionRoutes = require('./routes/addCapacitacion');//nombre de .js
+const editCapacitacionRoutes = require('./routes/editCapacitacion');
 require('dotenv').config();
 
 const app = express();
@@ -13,6 +17,9 @@ app.use(bodyParser.json());
 
 // Rutas
 app.use('/auth', authRoutes);
+app.use('/cap', capacitacionesRoutes);
+app.use('/addcap', addCapacitacionRoutes);
+app.use('/editcap', editCapacitacionRoutes);
 
 // Prueba de conexión y inicio del servidor
 const PORT = process.env.PORT || 5002;
@@ -31,5 +38,6 @@ async function startServer() {
     process.exit(1);
   }
 }
+
 
 startServer();

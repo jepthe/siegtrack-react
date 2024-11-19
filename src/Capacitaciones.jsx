@@ -1,7 +1,32 @@
-import React from 'react';
+// src/Capacitaciones.jsx
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './Capacitaciones.css';
+import { Link } from "react-router-dom";
 
 const Capacitaciones = () => {
+  const [capacitaciones, setCapacitaciones] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    fetchCapacitaciones();
+  }, []);
+
+  const fetchCapacitaciones = async () => {
+    try {
+      const response = await axios.get('http://localhost:5002/cap/capacitaciones');
+      setCapacitaciones(response.data);
+      setLoading(false);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Error al obtener los datos');
+      setLoading(false);
+      console.error('Error:', err);
+    }
+  };
+
+  
+
   return (
     <div className="dashboard">
       {/* Barra lateral */}
@@ -31,26 +56,34 @@ const Capacitaciones = () => {
       <main className="main-content">
         <header className="main-header">
           <h1>Control de Capacitaciones</h1>
-          <button className="new-training-btn">+ Nueva Capacitación</button>
+          <Link to="/addCapacitacion">
+            <button className="new-training-btn">+ Nueva Capacitación</button>
+          </Link>
         </header>
 
         {/* Tarjetas de estadísticas */}
         <div className="stats-container">
           <div className="stat-card">
             <span className="stat-label">Total Capacitaciones</span>
-            <span className="stat-value purple">24</span>
+            <span className="stat-value purple">{capacitaciones.length}</span>
           </div>
           <div className="stat-card">
             <span className="stat-label">En Progreso</span>
-            <span className="stat-value orange">12</span>
+            <span className="stat-value orange">
+              {capacitaciones.length}
+            </span>
           </div>
           <div className="stat-card">
             <span className="stat-label">Completadas</span>
-            <span className="stat-value green">8</span>
+            <span className="stat-value green">
+              {capacitaciones.length}
+            </span>
           </div>
           <div className="stat-card">
             <span className="stat-label">Pendientes</span>
-            <span className="stat-value red">4</span>
+            <span className="stat-value red">
+              {capacitaciones.length}
+            </span>
           </div>
         </div>
 
@@ -71,7 +104,7 @@ const Capacitaciones = () => {
         </div>
 
         {/* Tabla */}
-        <div className="table-container">
+        <div className="table-container" style={{ maxHeight: '400px', overflow: 'auto' }}>
           <table className="data-table">
             <thead>
               <tr>
@@ -85,42 +118,50 @@ const Capacitaciones = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>Inducción al puesto</td>
-                <td>HR</td>
-                <td>12/11/2024</td>
-                <td><span className="status-badge active">Activo</span></td>
-                <td>40 min.</td>
-                <td className="actions">
-                  <button className="edit-btn">Editar</button>
-                  <button className="delete-btn">Eliminar</button>
-                </td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>Seguridad Industrial</td>
-                <td>Seguridad</td>
-                <td>15/11/2024</td>
-                <td><span className="status-badge in-progress">En proceso</span></td>
-                <td>20 min.</td>
-                <td className="actions">
-                  <button className="edit-btn">Editar</button>
-                  <button className="delete-btn">Eliminar</button>
-                </td>
-              </tr>
-              <tr>
-                <td>3</td>
-                <td>Salubridad</td>
-                <td>Salud</td>
-                <td>25/12/2024</td>
-                <td><span className="status-badge pending">Pendiente</span></td>
-                <td>60 min.</td>
-                <td className="actions">
-                  <button className="edit-btn">Editar</button>
-                  <button className="delete-btn">Eliminar</button>
-                </td>
-              </tr>
+              {loading ? (
+                <tr key="loading-row">
+                  <td colSpan="7" style={{ textAlign: 'center' }}>Cargando datos...</td>
+                </tr>
+              ) : error ? (
+                <tr key="error-row">
+                  <td colSpan="7" style={{ textAlign: 'center', color: 'red' }}>
+                    Error: {error}
+                  </td>
+                </tr>
+              ) : capacitaciones.length === 0 ? (
+                <tr key="empty-row">
+                  <td colSpan="7" style={{ textAlign: 'center' }}>
+                    No hay capacitaciones disponibles
+                  </td>
+                </tr>
+              ) : (
+                capacitaciones.map((capacitacion) => (
+                  <tr key={capacitacion.capacitacion_id}>
+                    <td>{capacitacion.capacitacion_id}</td>
+                    <td>{capacitacion.nombre}</td>
+                    <td>{capacitacion.area}</td>
+                    <td>{new Date(capacitacion.fecha_inicio).toLocaleDateString()}</td>
+                    <td>
+                      <span className={`status-badge ${
+                        capacitacion.estado === 1 ? 'active' :
+                        capacitacion.estado === 2 ? 'in-progress' :
+                        'pending'
+                      }`}>
+                        {capacitacion.estado === 1 ? 'Activo' :
+                        capacitacion.estado === 2 ? 'En Proceso' :
+                        'Pendiente'}
+                      </span>
+                    </td>
+                    <td>{capacitacion.duracion_horas} hrs.</td>
+                    <td className="actions">
+                    <Link to={`/editCapacitacion/${capacitacion.capacitacion_id}`}>
+                        <button className="edit-btn">Editar</button>
+                      </Link>
+                      <button className="delete-btn">Eliminar</button>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
