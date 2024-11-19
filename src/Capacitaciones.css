@@ -181,10 +181,31 @@
 
 .search-bar input {
   width: 100%;
-  padding: 10px;
+  padding: 10px 10px 10px 10px; /* Espacio para el ícono */
   border: none;
   background-color: #f3f4f6;
   border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.search-bar .search-btn {
+  position: absolute;
+  top: 50%;
+  right: 10px; /* Espaciado del borde derecho */
+  transform: translateY(-50%);
+  background-color: #f3f4f6; /* Color rojo */
+  color: white;
+  border: none;
+  /*border-radius: 100%; /* Forma circular */
+  padding: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-bar .search-btn:hover {
+  background-color: #eaeaea; /* Efecto hover */
 }
 
 .filters {
@@ -253,19 +274,20 @@
 }
 
 .edit-btn {
-  background-color: #B11E1E;
-  color: white;
-  padding: 5px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.delete-btn {
   background-color: white;
   color: #B11E1E;
   padding: 5px 15px;
   border: 1px solid #B11E1E;
+  border-radius: 5px;
+  cursor: pointer;
+  
+}
+
+.delete-btn {
+  background-color: #B11E1E;
+  color: white;
+  padding: 5px 15px;
+  border: none;
   border-radius: 5px;
   cursor: pointer;
 }

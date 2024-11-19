@@ -22,15 +22,15 @@ const DeleteModal = ({ isOpen, onClose, capacitacion, onConfirm, isDeleting }) =
           <p className="modal-warning">Esta acción no se puede deshacer.</p>
         </div>
         <div className="modal-footer">
-          <button 
-            className="cancel-btn" 
+          <button
+            className="cancel-btn"
             onClick={onClose}
             disabled={isDeleting}
           >
             Cancelar
           </button>
-          <button 
-            className="confirm-delete-btn" 
+          <button
+            className="confirm-delete-btn"
             onClick={onConfirm}
             disabled={isDeleting}
           >
@@ -46,7 +46,7 @@ const Capacitaciones = () => {
   const [capacitaciones, setCapacitaciones] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const [searchTerm, setSearchTerm] = useState('');
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedCapacitacion, setSelectedCapacitacion] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -95,6 +95,35 @@ const Capacitaciones = () => {
       setSelectedCapacitacion(null);
     }
   };
+
+
+
+
+  // New search function   //considerár hacer lo de Lodash para la eficiencia de multiples llamadas simultanes 
+  const handleSearch = async (event) => {
+    const query = event.target.value;
+    setSearchTerm(query);
+
+    if (query.trim() === '') {
+      // If search is empty, fetch all capacitaciones
+      fetchCapacitaciones();
+      return;
+    }
+
+    try {
+      const response = await axios.get('http://localhost:5002/cap/capacitaciones/search', {
+        params: { query }
+      });
+      setCapacitaciones(response.data);
+    } catch (err) {
+      console.error('Error searching:', err);
+      setError(err.response?.data?.message || 'Error al buscar capacitaciones');
+    }
+  };
+
+
+
+
 
   return (
     <div className="dashboard">
@@ -159,17 +188,14 @@ const Capacitaciones = () => {
         {/* Área de búsqueda y filtros */}
         <div className="search-filters">
           <div className="search-bar">
-            <input type="text" placeholder="Buscar capacitación..." />
-            <span className="search-icon"></span>
+            <input 
+              type="text" 
+              placeholder="Buscar por nombre, área o ID..."
+              value={searchTerm}
+              onChange={handleSearch}
+            />
           </div>
-          <div className="filters">
-            <select className="filter-select">
-              <option>Estado ▼</option>
-            </select>
-            <select className="filter-select">
-              <option>Área ▼</option>
-            </select>
-          </div>
+
         </div>
 
         {/* Tabla */}
@@ -212,8 +238,8 @@ const Capacitaciones = () => {
                     <td>{new Date(capacitacion.fecha_inicio).toLocaleDateString()}</td>
                     <td>
                       <span className={`status-badge ${capacitacion.estado === 1 ? 'active' :
-                          capacitacion.estado === 2 ? 'in-progress' :
-                            'pending'
+                        capacitacion.estado === 2 ? 'in-progress' :
+                          'pending'
                         }`}>
                         {capacitacion.estado === 1 ? 'Activo' :
                           capacitacion.estado === 2 ? 'En Proceso' :
@@ -225,7 +251,7 @@ const Capacitaciones = () => {
                       <Link to={`/editCapacitacion/${capacitacion.capacitacion_id}`}>
                         <button className="edit-btn">Editar</button>
                       </Link>
-                      <button 
+                      <button
                         className="delete-btn"
                         onClick={() => handleDeleteClick(capacitacion)}
                       >
