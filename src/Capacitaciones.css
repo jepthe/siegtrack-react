@@ -42,6 +42,7 @@
   border: none;
   text-align: left;
   cursor: pointer;
+  width: 100%;/*ancho boton home, porque Link lo recorta*/
 }
 
 .menu-item:hover{
@@ -104,6 +105,9 @@
   border-radius: 6px;
   cursor: pointer;
   font-size: 12px;
+}
+.logout-btn:hover{/*cuando el puntero está sobre el boton*/
+  background-color: #ab2828; 
 }
 
 /* Contenido principal */
