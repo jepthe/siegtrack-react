@@ -5,12 +5,16 @@ import './Login.css';
 import logo from './assets/srRed.png';
 import eyeIcon from './assets/ojo.png';
 
+import { useUser } from './context/UserContext';// global
+
 function Login() {
   const [usuario, setUsuario] = useState('');
   const [password, setPassword] = useState('');
   const [mensaje, setMensaje] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+
+  const { setUserData } = useUser(); //user global
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,6 +26,11 @@ function Login() {
       });
 
       if (response.data.status === "success") {
+        // Guardar los datos del usuario en el contexto //global
+        setUserData({
+          nombre: response.data.nombre,
+          rol: response.data.rol
+        });
         setMensaje("¡Login exitoso!");
         navigate('/home');
       } else {

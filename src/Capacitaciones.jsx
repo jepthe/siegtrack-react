@@ -4,6 +4,8 @@ import axios from 'axios';
 import './Capacitaciones.css';
 import { Link } from "react-router-dom";
 import logoEmpresa from '/src/assets/srWhite.png';
+import { useUser } from './context/UserContext'; // Importa el hook useUser
+
 
 const DeleteModal = ({ isOpen, onClose, capacitacion, onConfirm, isDeleting }) => {
   if (!isOpen) return null;
@@ -56,6 +58,8 @@ const Capacitaciones = () => {
     activas: 0,
     inactivas: 0
   });
+  // Obtiene los datos del usuario desde el contexto global
+  const { userData } = useUser();
 
   useEffect(() => {
     fetchCapacitaciones();
@@ -156,10 +160,12 @@ const Capacitaciones = () => {
 
         <div className="profile">
           <div className="profile-info">
-            <div className="avatar">JH</div>
+          <div className="avatar">
+              {userData?.nombre?.charAt(0)?.toUpperCase() || 'U'}
+            </div>
             <div className="user-details">
-              <span className="user-name">Jepthé HF</span>
-              <span className="user-role">User</span>
+              <span className="user-name">{userData?.nombre || 'Usuario'}</span>
+              <span className="user-role">{userData?.rol || 'Sin rol'}</span>
             </div>
           </div>
           <button className="logout-btn">Cerrar Sesión</button>

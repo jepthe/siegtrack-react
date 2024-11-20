@@ -7,19 +7,23 @@ import Capacitaciones from "./Capacitaciones";
 import AddCapacitacion from "./AddCapacitacion";
 import EditCapacitacion from "./EditCapacitacion";
 
+import { UserProvider } from './context/UserContext';
+
 
 
 function App() {
-  
+
   return (
-    <Routes>
-      <Route path="/" element={<Login />} />
-      <Route path="/home" element={<HomePage />} />
-      <Route path="/capacitaciones" element={<Capacitaciones />} />
-      <Route path="/addCapacitacion" element={<AddCapacitacion />} />
-      <Route path="/editCapacitacion" element={<EditCapacitacion />} />
-      <Route path="/editCapacitacion/:id" element={<EditCapacitacion />} />
-    </Routes>
+    <UserProvider>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/capacitaciones" element={<Capacitaciones />} />
+        <Route path="/addCapacitacion" element={<AddCapacitacion />} />
+        <Route path="/editCapacitacion" element={<EditCapacitacion />} />
+        <Route path="/editCapacitacion/:id" element={<EditCapacitacion />} />
+      </Routes>
+    </UserProvider>
   );
 }
 
