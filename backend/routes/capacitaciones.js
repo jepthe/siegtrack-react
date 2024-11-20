@@ -73,4 +73,43 @@ router.get('/capacitaciones/search', (req, res) => {
   });
 });
 
+
+
+
+
+// endpoint para obtener estadísticas
+router.get('/capacitaciones/stats', (req, res) => {
+  pool.getConnection((err, connection) => {
+    if (err) {
+      console.error('Error al obtener conexión:', err);
+      return res.status(500).json({
+        status: "error",
+        message: "Error de conexión a la base de datos"
+      });
+    }
+
+    const sql = `
+      SELECT 
+        COUNT(*) as total,
+        SUM(CASE WHEN estado = 1 THEN 1 ELSE 0 END) as activas,
+        SUM(CASE WHEN estado = 0 THEN 1 ELSE 0 END) as inactivas
+      FROM capacitaciones
+    `;
+
+    connection.query(sql, (error, results) => {
+      connection.release();
+
+      if (error) {
+        console.error('Error en consulta:', error);
+        return res.status(500).json({
+          status: "error",
+          message: "Error en el servidor"
+        });
+      }
+
+      res.json(results[0]);
+    });
+  });
+});
+
 module.exports = router;

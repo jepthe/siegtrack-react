@@ -1,7 +1,7 @@
 /* Estilos generales */
 .dashboard {
   display: flex;
-  min-height: 100vh;
+  max-height: 100vh;/*full monitor*/
   background-color: #f3f4f6;
 }
 
@@ -43,7 +43,7 @@
   cursor: pointer;
 }
 
-.menu-item.active {
+.menu-item.active { /*cuando sobreponemos el puntero*/
   background-color: #881717;
 }
 
@@ -107,6 +107,7 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  
 }
 
 .main-header {
@@ -160,7 +161,7 @@
 }
 
 .stat-value.purple { color: #4f46e5; }
-.stat-value.orange { color: #f97316; }
+/*.stat-value.orange { color: #f97316; }*/
 .stat-value.green { color: #22c55e; }
 .stat-value.red { color: #ef4444; }
 
@@ -258,12 +259,12 @@
   color: #166534;
 }
 
-.status-badge.in-progress {
+/*.status-badge.in-progress {
   background-color: #fcc69b;
   color: #854d0e;
-}
+}*/
 
-.status-badge.pending {
+.status-badge.notactive {
   background-color: #f8d7da;
   color: #854d0e;
 }
@@ -385,4 +386,13 @@
 .cancel-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+
+.logo-image {/* logo */
+  max-width: 20vw;  
+  max-height: 20vh;
+  object-fit: contain;
+  margin-top: 16px;
+  margin-bottom: 50px;
 }

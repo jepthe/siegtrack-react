@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Capacitaciones.css';
 import { Link } from "react-router-dom";
+import logoEmpresa from '/src/assets/srWhite.png';
 
 const DeleteModal = ({ isOpen, onClose, capacitacion, onConfirm, isDeleting }) => {
   if (!isOpen) return null;
@@ -46,14 +47,29 @@ const Capacitaciones = () => {
   const [capacitaciones, setCapacitaciones] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');// buscador
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedCapacitacion, setSelectedCapacitacion] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [stats, setStats] = useState({// estadísticas
+    total: 0,
+    activas: 0,
+    inactivas: 0
+  });
 
   useEffect(() => {
     fetchCapacitaciones();
+    fetchStats(); //estadísticas
   }, []);
+
+  const fetchStats = async () => {
+    try {
+      const response = await axios.get('http://localhost:5002/cap/capacitaciones/stats'); //estadísticas
+      setStats(response.data);
+    } catch (err) {
+      console.error('Error al obtener estadísticas:', err);
+    }
+  };
 
   const fetchCapacitaciones = async () => {
     try {
@@ -129,13 +145,13 @@ const Capacitaciones = () => {
     <div className="dashboard">
       {/* Barra lateral */}
       <aside className="sidebar">
-        <div className="logo-container">
-          <span className="logo-text">LOGO EMPRESA</span>
-        </div>
+        
+          <img src={logoEmpresa} alt="Logo Empresa" className="logo-image" />
+        
 
         <nav className="menu">
-          <button className="menu-item active">Información General</button>
-          <button className="menu-item">Capacitaciones</button>
+          <button className="menu-item">Información General</button>
+          <button className="menu-item active">Capacitaciones</button>
         </nav>
 
         <div className="profile">
@@ -163,25 +179,16 @@ const Capacitaciones = () => {
         <div className="stats-container">
           <div className="stat-card">
             <span className="stat-label">Total Capacitaciones</span>
-            <span className="stat-value purple">{capacitaciones.length}</span>
+            <span className="stat-value purple">{stats.total}</span>
+          </div>
+         
+          <div className="stat-card">
+            <span className="stat-label">Activas</span>
+            <span className="stat-value green">{stats.activas}</span>
           </div>
           <div className="stat-card">
-            <span className="stat-label">En Progreso</span>
-            <span className="stat-value orange">
-              {capacitaciones.length}
-            </span>
-          </div>
-          <div className="stat-card">
-            <span className="stat-label">Completadas</span>
-            <span className="stat-value green">
-              {capacitaciones.length}
-            </span>
-          </div>
-          <div className="stat-card">
-            <span className="stat-label">Pendientes</span>
-            <span className="stat-value red">
-              {capacitaciones.length}
-            </span>
+            <span className="stat-label">Inactivas</span>
+            <span className="stat-value red">{stats.inactivas}</span>
           </div>
         </div>
 
@@ -238,12 +245,12 @@ const Capacitaciones = () => {
                     <td>{new Date(capacitacion.fecha_inicio).toLocaleDateString()}</td>
                     <td>
                       <span className={`status-badge ${capacitacion.estado === 1 ? 'active' :
-                        capacitacion.estado === 2 ? 'in-progress' :
-                          'pending'
+                        'notactive'
+                          
                         }`}>
                         {capacitacion.estado === 1 ? 'Activo' :
-                          capacitacion.estado === 2 ? 'En Proceso' :
-                            'Pendiente'}
+                          'Inactivo'}
+                            
                       </span>
                     </td>
                     <td>{capacitacion.duracion_horas} hrs.</td>

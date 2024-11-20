@@ -7,8 +7,16 @@ const HomePage = () => {
     <div className="homepage">
       {/* Barra superior */}
       <div className="navbar">
-        <div className="logo-circle"></div>
-        <h1 className="title">Home</h1>
+        <div className="navbar-left">
+          <h1 className="title">Siegfried Rhein</h1>
+        </div>
+        <div className="user-container">
+          <div className="avatar">JH</div>
+          <div className="user-details">
+            <span className="user-name">Jepthé HF</span>
+            <span className="user-role">User</span>
+          </div>
+        </div>
       </div>
 
       {/* Contenido principal */}
