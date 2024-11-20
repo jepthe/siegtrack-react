@@ -18,9 +18,16 @@ body {
   height: 80px;
   display: flex;
   align-items: center;
-  padding: 0 20px;
+  padding: 15px 20px;
   color: #ffffff;
   justify-content: space-between;
+}
+
+.logo-image-home {
+  max-height: 60px; /* Reduce el tamaño */
+  width: auto;
+  height: auto;
+  object-fit: contain;
 }
 
 .user-container {
@@ -59,11 +66,7 @@ body {
   font-size: 12px;
 }
 
-.title {
-  font-size: 24px;
-  font-weight: bold;
-  margin-left: 20px;
-}
+
 
 /* Contenido principal */
 .main-content {
@@ -160,4 +163,61 @@ body {
   padding: 15px 0;
   font-size: 14px;
   color: #6b7280;
+}
+
+
+/* cerrar sesión */
+
+.avatar-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.avatar-wrapper:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  min-width: 150px;
+  z-index: 1000;
+  margin-top: 5px;
+}
+
+.dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 10px 15px;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  color: #333;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.dropdown-item:hover {
+  background-color: #f5f5f5;
+}
+
+.dropdown-menu::before { /*flecha que señala de dónde se va a cerrar la sesión*/
+  content: '';
+  position: absolute;
+  top: -5px;
+  right: 20px;
+  width: 10px;
+  height: 10px;
+  background-color: white;
+  transform: rotate(45deg);
+  box-shadow: -2px -2px 5px rgba(0, 0, 0, 0.05);
 }

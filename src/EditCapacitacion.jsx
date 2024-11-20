@@ -3,10 +3,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import './AddCapacitacion.css';
+import logoEmpresa from '/src/assets/srWhite.png';
 
 const EditCapacitacion = () => {
   const { id } = useParams(); // Obtiene el ID de la URL
-  const navigate = useNavigate();
+  const navigate = useNavigate();//para ir a cap cuando se de en cancelar
   const [formData, setFormData] = useState({
     nombre: '',
     descripcion: '',
@@ -94,17 +95,8 @@ const EditCapacitacion = () => {
   return (
     <div className="container">
       {/* Barra lateral */}
-      <div className="sidebar">
-        <div className="logo-container">
-          <span className="logo-text">LOGO EMPRESA</span>
-        </div>
-
-        <nav className="sidebar-menu">
-          <button className="menu-item">Información General</button>
-          <button className="menu-item">Capacitaciones</button>
-        </nav>
-
-        <button className="back-button" onClick={handleCancel}>Regresar</button>
+      <div className="sidebar">      
+        <img src={logoEmpresa} alt="Logo Empresa" className="logo-image" />       
       </div>
 
       <main className="main-content">
@@ -241,7 +233,7 @@ const EditCapacitacion = () => {
         </form>
 
         <footer className="footer">
-          <span>SiegTrack 2024</span>
+          <span>© SiegTrack 2024</span>
         </footer>
       </main>
     </div>

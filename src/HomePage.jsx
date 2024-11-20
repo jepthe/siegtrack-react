@@ -1,31 +1,50 @@
-import React from "react";
+// src/HomePage.jsx
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./HomePage.css";
-
+import logoEmpresa from '/public/s.png';
 import { useUser } from './context/UserContext';
 
 const HomePage = () => {
 
-  const { userData } = useUser(); //global
+  const { userData, logout } = useUser();//global
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
 
   return (
     <div className="homepage">
       {/* Barra superior */}
       <div className="navbar">
         <div className="navbar-left">
-          <h1 className="title">Siegfried Rhein</h1>
+          <img src={logoEmpresa} alt="Logo Empresa" className="logo-image-home" />
+
         </div>
         <div className="user-container">
-          <div className="avatar">
-            {userData?.nombre?.charAt(0)?.toUpperCase() || 'U'}{/*global*/}
-          </div>
-          <div className="user-details">
-            <span className="user-name">{userData?.nombre || 'Usuario'}</span>{/*global*/}
-            <span className="user-role">{userData?.rol || 'Sin rol'}</span>{/*global*/}
+          <div
+            className="avatar-wrapper"
+            onClick={toggleDropdown}
+            style={{ cursor: 'pointer' }}
+          >
+            <div className="avatar">
+              {userData?.nombre?.charAt(0)?.toUpperCase() || 'U'}
+            </div>
+            <div className="user-details">
+              <span className="user-name">{userData?.nombre || 'Usuario'}</span>
+              <span className="user-role">{userData?.rol || 'Sin rol'}</span>
+            </div>
+            {isDropdownOpen && (
+              <div className="dropdown-menu">
+                <button onClick={logout} className="dropdown-item">
+                  Cerrar Sesión
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
-
       {/* Contenido principal */}
       <div className="main-content">
         <h2 className="welcome-title">Bienvenido</h2>

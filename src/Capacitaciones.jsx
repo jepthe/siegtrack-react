@@ -59,7 +59,7 @@ const Capacitaciones = () => {
     inactivas: 0
   });
   // Obtiene los datos del usuario desde el contexto global
-  const { userData } = useUser();
+  const { userData, logout } = useUser(); // logout para cerrar sesion
 
   useEffect(() => {
     fetchCapacitaciones();
@@ -149,18 +149,20 @@ const Capacitaciones = () => {
     <div className="dashboard">
       {/* Barra lateral */}
       <aside className="sidebar">
-        
-          <img src={logoEmpresa} alt="Logo Empresa" className="logo-image" />
-        
+
+        <img src={logoEmpresa} alt="Logo Empresa" className="logo-image" />
+
 
         <nav className="menu">
-          <button className="menu-item">Información General</button>
+          <Link to="/home">
+            <button className="menu-item">Home</button>
+          </Link>
           <button className="menu-item active">Capacitaciones</button>
         </nav>
 
         <div className="profile">
           <div className="profile-info">
-          <div className="avatar">
+            <div className="avatar">
               {userData?.nombre?.charAt(0)?.toUpperCase() || 'U'}
             </div>
             <div className="user-details">
@@ -168,7 +170,12 @@ const Capacitaciones = () => {
               <span className="user-role">{userData?.rol || 'Sin rol'}</span>
             </div>
           </div>
-          <button className="logout-btn">Cerrar Sesión</button>
+          <button
+            className="logout-btn"
+            onClick={logout}
+          >
+            Cerrar Sesión
+          </button>
         </div>
       </aside>
 
@@ -187,7 +194,7 @@ const Capacitaciones = () => {
             <span className="stat-label">Total Capacitaciones</span>
             <span className="stat-value purple">{stats.total}</span>
           </div>
-         
+
           <div className="stat-card">
             <span className="stat-label">Activas</span>
             <span className="stat-value green">{stats.activas}</span>
@@ -201,8 +208,8 @@ const Capacitaciones = () => {
         {/* Área de búsqueda y filtros */}
         <div className="search-filters">
           <div className="search-bar">
-            <input 
-              type="text" 
+            <input
+              type="text"
               placeholder="Buscar por nombre, área o ID..."
               value={searchTerm}
               onChange={handleSearch}
@@ -252,11 +259,11 @@ const Capacitaciones = () => {
                     <td>
                       <span className={`status-badge ${capacitacion.estado === 1 ? 'active' :
                         'notactive'
-                          
+
                         }`}>
                         {capacitacion.estado === 1 ? 'Activo' :
                           'Inactivo'}
-                            
+
                       </span>
                     </td>
                     <td>{capacitacion.duracion_horas} hrs.</td>
@@ -279,7 +286,7 @@ const Capacitaciones = () => {
         </div>
 
         <footer className="dashboard-footer">
-          <span>SiegTrack 2024</span>
+          <span>© SiegTrack 2024</span>
         </footer>
       </main>
 

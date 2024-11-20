@@ -2,8 +2,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './AddCapacitacion.css';
+import { useNavigate } from 'react-router-dom';
+import logoEmpresa from '/src/assets/srWhite.png';
 
 const AddCapacitacion = () => {
+
+  const navigate = useNavigate();//para ir a cap cuando se de en cancelar
+
   const [formData, setFormData] = useState({
     nombre: '',
     descripcion: '',
@@ -32,13 +37,13 @@ const AddCapacitacion = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     try {
-      
-     
+
+
       console.log('Datos a enviar:', formData);
       const response = await axios.post('http://localhost:5002/addcap/create', formData);
-      
+
       if (response.data.status === "success") {
         alert('Capacitación guardada exitosamente');
         // Aquí podrías redirigir al usuario o limpiar el formulario
@@ -49,20 +54,19 @@ const AddCapacitacion = () => {
     }
   };
 
+  const handleCancel = () => { //para regresar cuando le de en cancelar
+    navigate('/capacitaciones');
+  };
+
+  const handleAdd = () => { //para regresar cuando le de en cancelar
+    navigate('/capacitaciones');
+  };
+
   return (
     <div className="container">
       {/* Barra lateral */}
-      <div className="sidebar">
-        <div className="logo-container">
-          <span className="logo-text">LOGO EMPRESA</span>
-        </div>
-
-        <nav className="sidebar-menu">
-          <button className="menu-item">Información General</button>
-          <button className="menu-item">Capacitaciones</button>
-        </nav>
-
-        <button className="back-button">Regresar</button>
+      <div className="sidebar">      
+        <img src={logoEmpresa} alt="Logo Empresa" className="logo-image" />     
       </div>
 
       <main className="main-content">
@@ -77,7 +81,7 @@ const AddCapacitacion = () => {
         <form className="form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Nombre</label>
-            <input 
+            <input
               type="text"
               name="nombre"
               value={formData.nombre}
@@ -99,7 +103,7 @@ const AddCapacitacion = () => {
           <div className="form-row">
             <div className="form-group">
               <label>Área</label>
-              <input 
+              <input
                 type="text"
                 name="area"
                 value={formData.area}
@@ -109,7 +113,7 @@ const AddCapacitacion = () => {
             </div>
             <div className="form-group">
               <label>Estado</label>
-              <input 
+              <input
                 type="text"
                 name="estado"
                 value={formData.estado}
@@ -123,7 +127,7 @@ const AddCapacitacion = () => {
             <label>Modalidad</label>
             <div className="radio-group">
               <div className="radio-option">
-                <input 
+                <input
                   type="radio"
                   name="modalidad"
                   id="presencial"
@@ -133,7 +137,7 @@ const AddCapacitacion = () => {
                 <label htmlFor="presencial">Presencial</label>
               </div>
               <div className="radio-option">
-                <input 
+                <input
                   type="radio"
                   name="modalidad"
                   id="virtual"
@@ -143,7 +147,7 @@ const AddCapacitacion = () => {
                 <label htmlFor="virtual">Virtual</label>
               </div>
               <div className="radio-option">
-                <input 
+                <input
                   type="radio"
                   name="modalidad"
                   id="hibrido"
@@ -158,7 +162,7 @@ const AddCapacitacion = () => {
           <div className="form-row">
             <div className="form-group">
               <label>Fecha Inicio</label>
-              <input 
+              <input
                 type="date"
                 name="fecha_inicio"
                 value={formData.fecha_inicio}
@@ -168,7 +172,7 @@ const AddCapacitacion = () => {
             </div>
             <div className="form-group">
               <label>Fecha Fin</label>
-              <input 
+              <input
                 type="date"
                 name="fecha_fin"
                 value={formData.fecha_fin}
@@ -180,7 +184,7 @@ const AddCapacitacion = () => {
 
           <div className="form-group">
             <label>Duración (horas)</label>
-            <input 
+            <input
               type="number"
               name="duracion_horas"
               value={formData.duracion_horas}
@@ -190,13 +194,13 @@ const AddCapacitacion = () => {
           </div>
 
           <div className="button-group">
-            <button type="button" className="button-cancel">Cancelar</button>
-            <button type="submit" className="button-save">Guardar</button>
+            <button type="button" className="button-cancel" onClick={handleCancel}>Cancelar</button>
+            <button type="submit" className="button-save" onClick={handleAdd}>Guardar</button>
           </div>
         </form>
 
         <footer className="footer">
-          <span>SiegTrack 2024</span>
+          <span>© SiegTrack 2024</span>
         </footer>
       </main>
     </div>
