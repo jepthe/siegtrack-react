@@ -3,8 +3,8 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  
-  "homepage": "https://jepthe.github.io/siegtrack-react",
+  "homepage": "https://jepthe.github.io/siegtrack-react/",
+ 
   "scripts": {
     "dev": "vite",
     "build": "vite build",
