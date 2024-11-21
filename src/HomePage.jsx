@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./HomePage.css";
-import logoEmpresa from '/public/s.png';
+import logoEmpresa from '/src/assets/logo.png';
 import { useUser } from './context/UserContext';
 
 const HomePage = () => {
