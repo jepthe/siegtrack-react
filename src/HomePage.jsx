@@ -101,4 +101,4 @@ const HomePage = () => {
   );
 };
 
-export default Ho
+export default HomePage;

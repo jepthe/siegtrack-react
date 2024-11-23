@@ -32,4 +32,13 @@ export function UserProvider({ children }) {
   );
 }
 
-//export const 
+//export const useUser = () => useContext(UserContext);
+
+// Exportamos el hook como named export
+export function useUser() {
+  const context = useContext(UserContext);
+  if (context === undefined) {
+    throw new Error('useUser must be used within a UserProvider');
+  }
+  return context;
+}
