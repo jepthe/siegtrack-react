@@ -46,7 +46,7 @@ const AddCapacitacion = () => {
 
       if (response.data.status === "success") {
         alert('Capacitación guardada exitosamente');
-        // Aquí podrías redirigir al usuario o limpiar el formulario
+        navigate('/capacitaciones'); // Mover la navegación aquí
       }
     } catch (error) {
       console.error('Error al guardar la capacitación:', error);
@@ -195,7 +195,7 @@ const AddCapacitacion = () => {
 
           <div className="button-group">
             <button type="button" className="button-cancel" onClick={handleCancel}>Cancelar</button>
-            <button type="submit" className="button-save" onClick={handleAdd}>Guardar</button>
+            <button type="submit" className="button-save">Guardar</button>
           </div>
         </form>
 
