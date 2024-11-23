@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import logoEmpresa from '/src/assets/srWhite.png';
 import { useUser } from './context/UserContext'; // Importa el hook useUser
 
-
 const DeleteModal = ({ isOpen, onClose, capacitacion, onConfirm, isDeleting }) => {
   if (!isOpen) return null;
 

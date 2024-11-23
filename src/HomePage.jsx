@@ -5,6 +5,7 @@ import "./HomePage.css";
 import logoEmpresa from '/src/assets/logo.png';
 import { useUser } from './context/UserContext';
 
+
 const HomePage = () => {
 
   const { userData, logout } = useUser();//global
@@ -94,10 +95,10 @@ const HomePage = () => {
 
       {/* Footer */}
       <footer className="footer">
-        © 2024 SiegTrack.
+        <p>© 2024 SiegTrack.</p>
       </footer>
     </div>
   );
 };
 
-export default HomePage;
+export default Ho

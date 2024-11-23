@@ -4,7 +4,6 @@ import axios from 'axios';
 import './Login.css';
 import logo from './assets/srRed.png';
 import eyeIcon from './assets/ojo.png';
-
 import { useUser } from './context/UserContext';// global
 
 function Login() {
@@ -52,7 +51,7 @@ function Login() {
   };
 
   return (
-    <body class="login-page">
+    <div className="login-page">
     <div className="login-container">
       <div className="login-box">
         <div className="logo">
@@ -90,8 +89,8 @@ function Login() {
         </form>
       </div>
     </div>
-    </body>
+    </div>
   );
 }
 
-export default Login;
+export default Login

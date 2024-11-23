@@ -19,11 +19,17 @@ export function UserProvider({ children }) {
     navigate('/');
   };
 
+  const value = {
+    userData,
+    setUserData,
+    logout
+  };
+
   return (
-    <UserContext.Provider value={{ userData, setUserData, logout }}>
+    <UserContext.Provider value={value}>
       {children}
     </UserContext.Provider>
   );
 }
 
-export const useUser = () => useContext(UserContext);
+//export const 
