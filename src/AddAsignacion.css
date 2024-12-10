@@ -1,4 +1,53 @@
-/* src/AddCapacitacion.css */
+/* src/AddAsignacion.css */
+
+/* Estilos específicos para el formulario de asignaciones */
+.select-field {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background-color: #f3f4f6;
+    border-radius: 5px;
+    color: #374151;
+  }
+  
+  .select-field:disabled {
+    background-color: #e5e7eb;
+    cursor: not-allowed;
+  }
+  
+  .select-field:focus {
+    outline: none;
+    background-color: #e5e7eb;
+  }
+  
+  .date-field {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background-color: #f3f4f6;
+    border-radius: 5px;
+    color: #374151;
+  }
+  
+  .date-field:focus {
+    outline: none;
+    background-color: #e5e7eb;
+  }
+  
+  .error-message {
+    background-color: #fee2e2;
+    border: 1px solid #ef4444;
+    color: #dc2626;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-size: 14px;
+  }
+  
+
+
+
+  /* Heredar los estilos base del formulario */
 
 .container {
     display: flex;

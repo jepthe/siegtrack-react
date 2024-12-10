@@ -1,14 +1,13 @@
 // src/HomePage.jsx
+
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./HomePage.css";
 import logoEmpresa from '/src/assets/logo.png';
 import { useUser } from './context/UserContext';
 
-
 const HomePage = () => {
-
-  const { userData, logout } = useUser();//global
+  const { userData, logout } = useUser();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
@@ -21,7 +20,6 @@ const HomePage = () => {
       <div className="navbar">
         <div className="navbar-left">
           <img src={logoEmpresa} alt="Logo Empresa" className="logo-image-home" />
-
         </div>
         <div className="user-container">
           <div
@@ -46,6 +44,7 @@ const HomePage = () => {
           </div>
         </div>
       </div>
+
       {/* Contenido principal */}
       <div className="main-content">
         <h2 className="welcome-title">Bienvenido</h2>
@@ -62,7 +61,9 @@ const HomePage = () => {
             <p className="card-description">
               Administra los usuarios del sistema
             </p>
-            <button className="card-button">Administrar Usuarios</button>
+            <Link to="/usuarios">
+              <button className="card-button">Administrar Usuarios</button>
+            </Link>
           </div>
 
           {/* Tarjeta Colaboradores */}
@@ -74,7 +75,9 @@ const HomePage = () => {
             <p className="card-description">
               Gestiona los colaboradores
             </p>
-            <button className="card-button">Gestionar Colaboradores</button>
+            <Link to="/colaboradores">
+              <button className="card-button">Gestionar Colaboradores</button>
+            </Link>
           </div>
 
           {/* Tarjeta Capacitaciones */}
@@ -88,6 +91,20 @@ const HomePage = () => {
             </p>
             <Link to="/capacitaciones">
               <button className="card-button">Gestionar Capacitaciones</button>
+            </Link>
+          </div>
+
+          {/* Nueva Tarjeta Asignaciones */}
+          <div className="card">
+            <div className="card-icon-background">
+              <div className="card-icon"></div>
+            </div>
+            <h3 className="card-title">Asignaciones</h3>
+            <p className="card-description">
+              Gestiona las asignaciones de capacitaciones
+            </p>
+            <Link to="/asignaciones">
+              <button className="card-button">Gestionar Asignaciones</button>
             </Link>
           </div>
         </div>

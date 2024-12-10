@@ -1,3 +1,5 @@
+/* src/HomePage.css */
+
 /* Estilos generales */
 body {
   margin: 0;
@@ -86,10 +88,22 @@ body {
 }
 
 /* Grid de tarjetas */
-.card-grid {
+/*.card-grid {
   display: flex;
   justify-content: space-between;
   margin-top: 40px;
+}*/
+
+/* Actualizar el grid de tarjetas */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Cambiar a 2 columnas */
+  gap: 30px;
+  margin-top: 40px;
+  max-width: 1200px; /* Añadir un ancho máximo */
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 20px;
 }
 
 .card {
