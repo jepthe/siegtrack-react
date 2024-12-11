@@ -12,8 +12,17 @@ router.post('/create', (req, res) => {
     apellido_materno,
     departamento,
     estado,
-    puesto
+    puesto,
+    email  // Añadido el campo email
   } = req.body;
+
+  // Verificar que todos los campos requeridos estén presentes
+  if (!nombre || !apellido_paterno || !apellido_materno || !departamento || !estado || !puesto || !email) {
+    return res.status(400).json({
+      status: "error",
+      message: "Todos los campos son requeridos"
+    });
+  }
 
   pool.getConnection((err, connection) => {
     if (err) {
@@ -26,13 +35,13 @@ router.post('/create', (req, res) => {
 
     const sql = `
       INSERT INTO empleados 
-      (nombre, apellido_paterno, apellido_materno, departamento, estado, puesto) 
-      VALUES (?, ?, ?, ?, ?, ?)
+      (nombre, apellido_paterno, apellido_materno, departamento, estado, puesto, email)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
 
     connection.query(
       sql,
-      [nombre, apellido_paterno, apellido_materno, departamento, estado, puesto],
+      [nombre, apellido_paterno, apellido_materno, departamento, estado, puesto, email],
       (error, results) => {
         connection.release();
 

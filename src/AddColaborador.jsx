@@ -15,7 +15,8 @@ const AddColaborador = () => {
     apellido_materno: '',
     departamento: '',
     estado: 'Activo',
-    puesto: ''
+    puesto: '',
+    email: '' // Nuevo campo
   });
 
   const handleInputChange = (e) => {
@@ -119,6 +120,19 @@ const AddColaborador = () => {
                 required
               />
             </div>
+            
+            <div className="form-group">
+                <label>Correo Electrónico</label>
+                <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    required
+                    placeholder="correo@ejemplo.com"
+                />
+            </div>
+
           </div>
 
           <div className="form-group">

@@ -1,43 +1,44 @@
 // backend/routes/asignaciones.js
 
-const express = require('express');
-const { pool } = require('../config/db');
+const express = require("express");
+const { pool } = require("../config/db");
 const router = express.Router();
 
 // Obtener todas las asignaciones con información relacionada
-router.get('/asignaciones', (req, res) => {
+router.get("/asignaciones", (req, res) => {
   pool.getConnection((err, connection) => {
     if (err) {
-      console.error('Error al obtener conexión:', err);
+      console.error("Error al obtener conexión:", err);
       return res.status(500).json({
         status: "error",
-        message: "Error de conexión a la base de datos"
+        message: "Error de conexión a la base de datos",
       });
     }
 
     const sql = `
-      SELECT 
-        a.asignacion_id,
-        e.nombre AS nombre_empleado,
-        CONCAT(e.nombre, ' ', e.apellido_paterno, ' ', e.apellido_materno) as nombre_completo_empleado,
-        c.nombre AS nombre_capacitacion,
-        c.area,
-        a.fecha_asignacion,
-        a.fecha_completado
-      FROM asignaciones_capacitaciones a
-      JOIN empleados e ON a.empleado_id = e.empleado_id
-      JOIN capacitaciones c ON a.capacitacion_id = c.capacitacion_id
-      ORDER BY a.fecha_asignacion DESC
+        SELECT 
+            a.asignacion_id,
+            e.nombre AS nombre_empleado,
+            e.email AS email_empleado,
+            CONCAT(e.nombre, ' ', e.apellido_paterno, ' ', e.apellido_materno) as nombre_completo_empleado,
+            c.nombre AS nombre_capacitacion,
+            c.area,
+            a.fecha_asignacion,
+            a.fecha_completado
+        FROM asignaciones_capacitaciones a
+        JOIN empleados e ON a.empleado_id = e.empleado_id
+        JOIN capacitaciones c ON a.capacitacion_id = c.capacitacion_id
+        ORDER BY a.fecha_asignacion DESC
     `;
-    
+
     connection.query(sql, (error, results) => {
       connection.release();
 
       if (error) {
-        console.error('Error en consulta:', error);
+        console.error("Error en consulta:", error);
         return res.status(500).json({
           status: "error",
-          message: "Error en el servidor"
+          message: "Error en el servidor",
         });
       }
 
@@ -47,51 +48,53 @@ router.get('/asignaciones', (req, res) => {
 });
 
 // Búsqueda de asignaciones
-router.get('/asignaciones/search', (req, res) => {
+router.get("/asignaciones/search", (req, res) => {
   const { query } = req.query;
 
   pool.getConnection((err, connection) => {
     if (err) {
-      console.error('Error al obtener conexión:', err);
+      console.error("Error al obtener conexión:", err);
       return res.status(500).json({
         status: "error",
-        message: "Error de conexión a la base de datos"
+        message: "Error de conexión a la base de datos",
       });
     }
 
     const sql = `
-      SELECT 
-        a.asignacion_id,
-        e.nombre AS nombre_empleado,
-        CONCAT(e.nombre, ' ', e.apellido_paterno, ' ', e.apellido_materno) as nombre_completo_empleado,
-        c.nombre AS nombre_capacitacion,
-        c.area,
-        a.fecha_asignacion,
-        a.fecha_completado
-      FROM asignaciones_capacitaciones a
-      JOIN empleados e ON a.empleado_id = e.empleado_id
-      JOIN capacitaciones c ON a.capacitacion_id = c.capacitacion_id
-      WHERE 
-        e.nombre LIKE ? OR
-        e.apellido_paterno LIKE ? OR
-        e.apellido_materno LIKE ? OR
-        c.nombre LIKE ? OR
-        c.area LIKE ? OR
-        CAST(a.asignacion_id AS CHAR) LIKE ?
-      ORDER BY a.fecha_asignacion DESC
+        SELECT 
+            a.asignacion_id,
+            e.nombre AS nombre_empleado,
+            e.email AS email_empleado,
+            CONCAT(e.nombre, ' ', e.apellido_paterno, ' ', e.apellido_materno) as nombre_completo_empleado,
+            c.nombre AS nombre_capacitacion,
+            c.area,
+            a.fecha_asignacion,
+            a.fecha_completado
+        FROM asignaciones_capacitaciones a
+        JOIN empleados e ON a.empleado_id = e.empleado_id
+        JOIN capacitaciones c ON a.capacitacion_id = c.capacitacion_id
+        WHERE 
+            e.nombre LIKE ? OR
+            e.apellido_paterno LIKE ? OR
+            e.apellido_materno LIKE ? OR
+            e.email LIKE ? OR
+            c.nombre LIKE ? OR
+            c.area LIKE ? OR
+            CAST(a.asignacion_id AS CHAR) LIKE ?
+        ORDER BY a.fecha_asignacion DESC
     `;
 
     const searchTerm = `%${query}%`;
-    const params = Array(6).fill(searchTerm);
+    const params = Array(7).fill(searchTerm);
 
     connection.query(sql, params, (error, results) => {
       connection.release();
 
       if (error) {
-        console.error('Error en consulta de búsqueda:', error);
+        console.error("Error en consulta de búsqueda:", error);
         return res.status(500).json({
           status: "error",
-          message: "Error en el servidor"
+          message: "Error en el servidor",
         });
       }
 
@@ -101,13 +104,13 @@ router.get('/asignaciones/search', (req, res) => {
 });
 
 // Obtener estadísticas
-router.get('/asignaciones/stats', (req, res) => {
+router.get("/asignaciones/stats", (req, res) => {
   pool.getConnection((err, connection) => {
     if (err) {
-      console.error('Error al obtener conexión:', err);
+      console.error("Error al obtener conexión:", err);
       return res.status(500).json({
         status: "error",
-        message: "Error de conexión a la base de datos"
+        message: "Error de conexión a la base de datos",
       });
     }
 
@@ -123,10 +126,10 @@ router.get('/asignaciones/stats', (req, res) => {
       connection.release();
 
       if (error) {
-        console.error('Error en consulta:', error);
+        console.error("Error en consulta:", error);
         return res.status(500).json({
           status: "error",
-          message: "Error en el servidor"
+          message: "Error en el servidor",
         });
       }
 
@@ -136,12 +139,12 @@ router.get('/asignaciones/stats', (req, res) => {
 });
 
 // Obtener lista de áreas únicas para filtrado
-router.get('/areas', (req, res) => {
+router.get("/areas", (req, res) => {
   pool.getConnection((err, connection) => {
     if (err) {
       return res.status(500).json({
         status: "error",
-        message: "Error de conexión a la base de datos"
+        message: "Error de conexión a la base de datos",
       });
     }
 
@@ -157,24 +160,24 @@ router.get('/areas', (req, res) => {
       if (error) {
         return res.status(500).json({
           status: "error",
-          message: "Error al obtener las áreas"
+          message: "Error al obtener las áreas",
         });
       }
 
-      res.json(results.map(row => row.area));
+      res.json(results.map((row) => row.area));
     });
   });
 });
 
 // Obtener empleados por área/departamento
-router.get('/empleados-por-area/:area', (req, res) => {
+router.get("/empleados-por-area/:area", (req, res) => {
   const { area } = req.params;
 
   pool.getConnection((err, connection) => {
     if (err) {
       return res.status(500).json({
         status: "error",
-        message: "Error de conexión a la base de datos"
+        message: "Error de conexión a la base de datos",
       });
     }
 
@@ -195,7 +198,7 @@ router.get('/empleados-por-area/:area', (req, res) => {
       if (error) {
         return res.status(500).json({
           status: "error",
-          message: "Error al obtener los empleados"
+          message: "Error al obtener los empleados",
         });
       }
 
@@ -205,14 +208,14 @@ router.get('/empleados-por-area/:area', (req, res) => {
 });
 
 // Obtener capacitaciones por área
-router.get('/capacitaciones-por-area/:area', (req, res) => {
+router.get("/capacitaciones-por-area/:area", (req, res) => {
   const { area } = req.params;
 
   pool.getConnection((err, connection) => {
     if (err) {
       return res.status(500).json({
         status: "error",
-        message: "Error de conexión a la base de datos"
+        message: "Error de conexión a la base de datos",
       });
     }
 
@@ -233,7 +236,7 @@ router.get('/capacitaciones-por-area/:area', (req, res) => {
       if (error) {
         return res.status(500).json({
           status: "error",
-          message: "Error al obtener las capacitaciones"
+          message: "Error al obtener las capacitaciones",
         });
       }
 

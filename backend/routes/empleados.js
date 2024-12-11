@@ -23,7 +23,8 @@ router.get('/empleados', (req, res) => {
         apellido_materno,
         departamento,
         estado,
-        puesto
+        puesto,
+        email
       FROM empleados
     `;
     

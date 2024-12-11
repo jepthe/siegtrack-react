@@ -206,6 +206,7 @@ const AsignacionCapacitaciones = () => {
               <tr>
                 <th>ID</th>
                 <th>Empleado</th>
+                <th>Email</th>
                 <th>Capacitación</th>
                 <th>Área</th>
                 <th>Fecha Asignación</th>
@@ -236,6 +237,7 @@ const AsignacionCapacitaciones = () => {
                   <tr key={asignacion.asignacion_id}>
                     <td>{asignacion.asignacion_id}</td>
                     <td>{asignacion.nombre_empleado}</td>
+                    <td>{asignacion.email_empleado}</td>
                     <td>{asignacion.nombre_capacitacion}</td>
                     <td>{asignacion.area}</td>
                     <td>{formatDate(asignacion.fecha_asignacion)}</td>

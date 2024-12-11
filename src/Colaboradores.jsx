@@ -204,6 +204,7 @@ const Colaboradores = () => {
               <tr>
                 <th>ID</th>
                 <th>Nombre Completo</th>
+                <th>Email</th>
                 <th>Departamento</th>
                 <th>Puesto</th>
                 <th>Estado</th>
@@ -234,6 +235,7 @@ const Colaboradores = () => {
                     <td>
                       {empleado.nombre} {empleado.apellido_paterno} {empleado.apellido_materno}
                     </td>
+                    <td>{empleado.email}</td>
                     <td>{empleado.departamento}</td>
                     <td>{empleado.puesto}</td>
                     <td>

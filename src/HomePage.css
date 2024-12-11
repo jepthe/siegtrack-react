@@ -97,7 +97,7 @@ body {
 /* Actualizar el grid de tarjetas */
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Cambiar a 2 columnas */
+  grid-template-columns: repeat(4, 1fr); /* Cambiar a 4 columnas */
   gap: 30px;
   margin-top: 40px;
   max-width: 1200px; /* Añadir un ancho máximo */
@@ -107,8 +107,8 @@ body {
 }
 
 .card {
-  width: 300px;
-  height: 380px;
+  width: 250px;
+  height: 320px;
   background-color: #ffffff;
   border: 2px solid #e5e7eb;
   border-radius: 20px;
@@ -121,7 +121,7 @@ body {
 }
 
 .card:hover {
-  transform: scale(1.05);
+  transform: scale(1.15);
 }
 
 .card-icon-background {

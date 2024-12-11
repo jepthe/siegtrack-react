@@ -48,7 +48,8 @@ router.put('/update/:id', (req, res) => {
     apellido_materno,
     departamento,
     estado,
-    puesto
+    puesto,
+    email  // Añadir email aquí
   } = req.body;
 
   pool.getConnection((err, connection) => {
@@ -67,13 +68,14 @@ router.put('/update/:id', (req, res) => {
         apellido_materno = ?,
         departamento = ?,
         estado = ?,
-        puesto = ?
+        puesto = ?,
+        email = ?
       WHERE empleado_id = ?
     `;
 
     connection.query(
       sql,
-      [nombre, apellido_paterno, apellido_materno, departamento, estado, puesto, id],
+      [nombre, apellido_paterno, apellido_materno, departamento, estado, puesto, email, id],
       (error, results) => {
         connection.release();
 

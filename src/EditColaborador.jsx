@@ -16,7 +16,8 @@ const EditColaborador = () => {
     apellido_materno: '',
     departamento: '',
     estado: '',
-    puesto: ''
+    puesto: '',
+    email: ''  // Añadir email aquí
   });
 
   const [loading, setLoading] = useState(true);
@@ -34,7 +35,8 @@ const EditColaborador = () => {
           apellido_materno: empleado.apellido_materno,
           departamento: empleado.departamento,
           estado: empleado.estado,
-          puesto: empleado.puesto
+          puesto: empleado.puesto,
+          email: empleado.email
         });
         setLoading(false);
       } catch (error) {
@@ -153,6 +155,17 @@ const EditColaborador = () => {
                 value={formData.puesto}
                 onChange={handleInputChange}
                 required
+              />
+            </div>
+            <div className="form-group">
+              <label>Correo Electrónico</label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                required
+                placeholder="correo@ejemplo.com"
               />
             </div>
           </div>
