@@ -1,11 +1,11 @@
 // src/Usuarios.jsx
 
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './Usuarios.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./Usuarios.css";
 import { Link } from "react-router-dom";
-import logoEmpresa from '/src/assets/srWhite.png';
-import { useUser } from './context/UserContext';
+import logoEmpresa from "/src/assets/srWhite.png";
+import { useUser } from "./context/UserContext";
 
 const DeleteModal = ({ isOpen, onClose, usuario, onConfirm, isDeleting }) => {
   if (!isOpen) return null;
@@ -18,9 +18,15 @@ const DeleteModal = ({ isOpen, onClose, usuario, onConfirm, isDeleting }) => {
           <p>¿Está seguro que desea eliminar el siguiente usuario?</p>
           {usuario && (
             <div className="modal-info">
-              <p><strong>ID:</strong> {usuario.usuario_id}</p>
-              <p><strong>Usuario:</strong> {usuario.nombre_usuario}</p>
-              <p><strong>Rol:</strong> {usuario.rol}</p>
+              <p>
+                <strong>ID:</strong> {usuario.usuario_id}
+              </p>
+              <p>
+                <strong>Usuario:</strong> {usuario.nombre_usuario}
+              </p>
+              <p>
+                <strong>Rol:</strong> {usuario.rol}
+              </p>
             </div>
           )}
           <p className="modal-warning">Esta acción no se puede deshacer.</p>
@@ -38,7 +44,7 @@ const DeleteModal = ({ isOpen, onClose, usuario, onConfirm, isDeleting }) => {
             onClick={onConfirm}
             disabled={isDeleting}
           >
-            {isDeleting ? 'Eliminando...' : 'Eliminar'}
+            {isDeleting ? "Eliminando..." : "Eliminar"}
           </button>
         </div>
       </div>
@@ -50,16 +56,16 @@ const Usuarios = () => {
   const [usuarios, setUsuarios] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedUsuario, setSelectedUsuario] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [stats, setStats] = useState({
     total: 0,
     administradores: 0,
-    usuarios: 0
+    usuarios: 0,
   });
-  
+
   const { userData, logout } = useUser();
 
   useEffect(() => {
@@ -69,22 +75,24 @@ const Usuarios = () => {
 
   const fetchStats = async () => {
     try {
-      const response = await axios.get('http://localhost:5002/users/usuarios/stats');
+      const response = await axios.get(
+        "http://localhost:5002/users/usuarios/stats"
+      );
       setStats(response.data);
     } catch (err) {
-      console.error('Error al obtener estadísticas:', err);
+      console.error("Error al obtener estadísticas:", err);
     }
   };
 
   const fetchUsuarios = async () => {
     try {
-      const response = await axios.get('http://localhost:5002/users/usuarios');
+      const response = await axios.get("http://localhost:5002/users/usuarios");
       setUsuarios(response.data);
       setLoading(false);
     } catch (err) {
-      setError(err.response?.data?.message || 'Error al obtener los datos');
+      setError(err.response?.data?.message || "Error al obtener los datos");
       setLoading(false);
-      console.error('Error:', err);
+      console.error("Error:", err);
     }
   };
 
@@ -103,13 +111,13 @@ const Usuarios = () => {
       );
 
       if (response.data.success) {
-        alert('Usuario eliminado exitosamente');
+        alert("Usuario eliminado exitosamente");
         await fetchUsuarios();
         await fetchStats();
       }
     } catch (err) {
-      console.error('Error al eliminar:', err);
-      alert('Error al eliminar el usuario. Por favor, intente nuevamente.');
+      console.error("Error al eliminar:", err);
+      alert("Error al eliminar el usuario. Por favor, intente nuevamente.");
     } finally {
       setIsDeleting(false);
       setDeleteModalOpen(false);
@@ -121,19 +129,22 @@ const Usuarios = () => {
     const query = event.target.value;
     setSearchTerm(query);
 
-    if (query.trim() === '') {
+    if (query.trim() === "") {
       fetchUsuarios();
       return;
     }
 
     try {
-      const response = await axios.get('http://localhost:5002/users/usuarios/search', {
-        params: { query }
-      });
+      const response = await axios.get(
+        "http://localhost:5002/users/usuarios/search",
+        {
+          params: { query },
+        }
+      );
       setUsuarios(response.data);
     } catch (err) {
-      console.error('Error searching:', err);
-      setError(err.response?.data?.message || 'Error al buscar usuarios');
+      console.error("Error searching:", err);
+      setError(err.response?.data?.message || "Error al buscar usuarios");
     }
   };
 
@@ -151,11 +162,11 @@ const Usuarios = () => {
         <div className="profile">
           <div className="profile-info">
             <div className="avatar">
-              {userData?.nombre?.charAt(0)?.toUpperCase() || 'U'}
+              {userData?.nombre?.charAt(0)?.toUpperCase() || "U"}
             </div>
             <div className="user-details">
-              <span className="user-name">{userData?.nombre || 'Usuario'}</span>
-              <span className="user-role">{userData?.rol || 'Sin rol'}</span>
+              <span className="user-name">{userData?.nombre || "Usuario"}</span>
+              <span className="user-role">{userData?.rol || "Sin rol"}</span>
             </div>
           </div>
           <button className="logout-btn" onClick={logout}>
@@ -198,7 +209,10 @@ const Usuarios = () => {
           </div>
         </div>
 
-        <div className="table-container" style={{ maxHeight: '400px', overflow: 'auto' }}>
+        <div
+          className="table-container"
+          style={{ maxHeight: "400px", overflow: "auto" }}
+        >
           <table className="data-table">
             <thead>
               <tr>
@@ -211,17 +225,19 @@ const Usuarios = () => {
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan="4" style={{ textAlign: 'center' }}>Cargando datos...</td>
+                  <td colSpan="4" style={{ textAlign: "center" }}>
+                    Cargando datos...
+                  </td>
                 </tr>
               ) : error ? (
                 <tr>
-                  <td colSpan="4" style={{ textAlign: 'center', color: 'red' }}>
+                  <td colSpan="4" style={{ textAlign: "center", color: "red" }}>
                     Error: {error}
                   </td>
                 </tr>
               ) : usuarios.length === 0 ? (
                 <tr>
-                  <td colSpan="4" style={{ textAlign: 'center' }}>
+                  <td colSpan="4" style={{ textAlign: "center" }}>
                     No hay usuarios disponibles
                   </td>
                 </tr>
@@ -231,7 +247,9 @@ const Usuarios = () => {
                     <td>{usuario.usuario_id}</td>
                     <td>{usuario.nombre_usuario}</td>
                     <td>
-                      <span className={`role-badge ${usuario.rol.toLowerCase()}`}>
+                      <span
+                        className={`role-badge ${usuario.rol.toLowerCase()}`}
+                      >
                         {usuario.rol}
                       </span>
                     </td>

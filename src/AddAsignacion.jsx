@@ -1,36 +1,36 @@
 // src/AddAsignacion.jsx
 
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './AddAsignacion.css';
-import { useNavigate } from 'react-router-dom';
-import logoEmpresa from '/src/assets/srWhite.png';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./AddAsignacion.css";
+import { useNavigate } from "react-router-dom";
+import logoEmpresa from "/src/assets/srWhite.png";
 
 const AddAsignacion = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    empleado_id: '',
-    capacitacion_id: '',
-    fecha_asignacion: new Date().toISOString().split('T')[0],
-    fecha_completado: ''
+    empleado_id: "",
+    capacitacion_id: "",
+    fecha_asignacion: new Date().toISOString().split("T")[0],
+    fecha_completado: "",
   });
 
   const [areas, setAreas] = useState([]);
-  const [selectedArea, setSelectedArea] = useState('');
+  const [selectedArea, setSelectedArea] = useState("");
   const [empleados, setEmpleados] = useState([]);
   const [capacitaciones, setCapacitaciones] = useState([]);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   // Cargar áreas al montar el componente
   useEffect(() => {
     const fetchAreas = async () => {
       try {
-        const response = await axios.get('http://localhost:5002/asig/areas');
+        const response = await axios.get("http://localhost:5002/asig/areas");
         setAreas(response.data);
       } catch (error) {
-        console.error('Error al cargar áreas:', error);
-        setError('Error al cargar las áreas');
+        console.error("Error al cargar áreas:", error);
+        setError("Error al cargar las áreas");
       }
     };
 
@@ -43,14 +43,18 @@ const AddAsignacion = () => {
       const fetchEmpleadosYCapacitaciones = async () => {
         try {
           const [empResponse, capResponse] = await Promise.all([
-            axios.get(`http://localhost:5002/asig/empleados-por-area/${selectedArea}`),
-            axios.get(`http://localhost:5002/asig/capacitaciones-por-area/${selectedArea}`)
+            axios.get(
+              `http://localhost:5002/asig/empleados-por-area/${selectedArea}`
+            ),
+            axios.get(
+              `http://localhost:5002/asig/capacitaciones-por-area/${selectedArea}`
+            ),
           ]);
           setEmpleados(empResponse.data);
           setCapacitaciones(capResponse.data);
         } catch (error) {
-          console.error('Error al cargar datos:', error);
-          setError('Error al cargar empleados y capacitaciones');
+          console.error("Error al cargar datos:", error);
+          setError("Error al cargar empleados y capacitaciones");
         }
       };
 
@@ -61,18 +65,18 @@ const AddAsignacion = () => {
   const handleAreaChange = (e) => {
     setSelectedArea(e.target.value);
     // Resetear selecciones cuando cambia el área
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      empleado_id: '',
-      capacitacion_id: ''
+      empleado_id: "",
+      capacitacion_id: "",
     }));
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -83,25 +87,28 @@ const AddAsignacion = () => {
       // Crear una copia del formData para limpiar el campo fecha_completado si está vacío
       const dataToSend = {
         ...formData,
-        fecha_completado: formData.fecha_completado || null
+        fecha_completado: formData.fecha_completado || null,
       };
 
-      console.log('Datos a enviar:', dataToSend); // Para debug
+      console.log("Datos a enviar:", dataToSend); // Para debug
 
-      const response = await axios.post('http://localhost:5002/addasig/create', dataToSend);
+      const response = await axios.post(
+        "http://localhost:5002/addasig/create",
+        dataToSend
+      );
 
       if (response.data.status === "success") {
-        alert('Asignación creada exitosamente');
-        navigate('/asignaciones');
+        alert("Asignación creada exitosamente");
+        navigate("/asignaciones");
       }
     } catch (error) {
-      console.error('Error completo:', error);
-      setError(error.response?.data?.message || 'Error al crear la asignación');
+      console.error("Error completo:", error);
+      setError(error.response?.data?.message || "Error al crear la asignación");
     }
   };
-  
+
   const handleCancel = () => {
-    navigate('/asignaciones');
+    navigate("/asignaciones");
   };
 
   return (
@@ -132,7 +139,9 @@ const AddAsignacion = () => {
             >
               <option value="">Seleccione un área</option>
               {areas.map((area, index) => (
-                <option key={index} value={area}>{area}</option>
+                <option key={index} value={area}>
+                  {area}
+                </option>
               ))}
             </select>
           </div>
@@ -168,7 +177,10 @@ const AddAsignacion = () => {
             >
               <option value="">Seleccione una capacitación</option>
               {capacitaciones.map((capacitacion) => (
-                <option key={capacitacion.capacitacion_id} value={capacitacion.capacitacion_id}>
+                <option
+                  key={capacitacion.capacitacion_id}
+                  value={capacitacion.capacitacion_id}
+                >
                   {capacitacion.nombre} ({capacitacion.duracion_horas} hrs)
                 </option>
               ))}
@@ -200,7 +212,11 @@ const AddAsignacion = () => {
           </div>
 
           <div className="button-group">
-            <button type="button" className="button-cancel" onClick={handleCancel}>
+            <button
+              type="button"
+              className="button-cancel"
+              onClick={handleCancel}
+            >
               Cancelar
             </button>
             <button type="submit" className="button-save">

@@ -1,17 +1,17 @@
 // src/Login.jsx
 
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import './Login.css';
-import logo from './assets/srRed.png';
-import eyeIcon from './assets/ojo.png';
-import { useUser } from './context/UserContext';// global
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import "./Login.css";
+import logo from "./assets/srRed.png";
+import eyeIcon from "./assets/ojo.png";
+import { useUser } from "./context/UserContext"; // global
 
 function Login() {
-  const [usuario, setUsuario] = useState('');
-  const [password, setPassword] = useState('');
-  const [mensaje, setMensaje] = useState('');
+  const [usuario, setUsuario] = useState("");
+  const [password, setPassword] = useState("");
+  const [mensaje, setMensaje] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
@@ -21,7 +21,7 @@ function Login() {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:5002/auth/login', {
+      const response = await axios.post("http://localhost:5002/auth/login", {
         usuario,
         password,
       });
@@ -30,10 +30,10 @@ function Login() {
         // Guardar los datos del usuario en el contexto //global
         setUserData({
           nombre: response.data.nombre,
-          rol: response.data.rol
+          rol: response.data.rol,
         });
         setMensaje("¡Login exitoso!");
-        navigate('/home');
+        navigate("/home");
       } else {
         setMensaje(response.data.message);
       }
@@ -54,43 +54,45 @@ function Login() {
 
   return (
     <div className="login-page">
-    <div className="login-container">
-      <div className="login-box">
-        <div className="logo">
-          <img src={logo} alt="Logo SR" />
+      <div className="login-container">
+        <div className="login-box">
+          <div className="logo">
+            <img src={logo} alt="Logo SR" />
+          </div>
+          <form onSubmit={handleSubmit}>
+            <div className="input-group">
+              <input
+                type="text"
+                id="usuario"
+                placeholder="Usuario"
+                required
+                value={usuario}
+                onChange={(e) => setUsuario(e.target.value)}
+              />
+            </div>
+            <div className="input-group">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="password"
+                placeholder="Password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <img
+                src={eyeIcon}
+                className="toggle-password"
+                alt="Mostrar/Ocultar"
+                onClick={() => setShowPassword(!showPassword)}
+              />
+            </div>
+            {mensaje && <div className="error-message">{mensaje}</div>}
+            <button type="submit" className="login-btn">
+              ENTRAR
+            </button>
+          </form>
         </div>
-        <form onSubmit={handleSubmit}>
-          <div className="input-group">
-            <input
-              type="text"
-              id="usuario"
-              placeholder="Usuario"
-              required
-              value={usuario}
-              onChange={(e) => setUsuario(e.target.value)}
-            />
-          </div>
-          <div className="input-group">
-            <input
-              type={showPassword ? "text" : "password"}
-              id="password"
-              placeholder="Password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <img 
-              src={eyeIcon} 
-              className="toggle-password" 
-              alt="Mostrar/Ocultar"
-              onClick={() => setShowPassword(!showPassword)}
-            />
-          </div>
-          {mensaje && <div className="error-message">{mensaje}</div>}
-          <button type="submit" className="login-btn">ENTRAR</button>
-        </form>
       </div>
-    </div>
     </div>
   );
 }

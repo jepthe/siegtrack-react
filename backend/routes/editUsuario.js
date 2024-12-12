@@ -1,36 +1,37 @@
 // backend/routes/editUsuario.js
 
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { pool } = require('../config/db');
+const { pool } = require("../config/db");
 
 // Obtener usuario por ID
-router.get('/search/:id', (req, res) => {
+router.get("/search/:id", (req, res) => {
   const { id } = req.params;
 
   pool.getConnection((err, connection) => {
     if (err) {
       return res.status(500).json({
         status: "error",
-        message: "Error de conexión a la base de datos"
+        message: "Error de conexión a la base de datos",
       });
     }
 
-    const sql = 'SELECT usuario_id, nombre_usuario, rol FROM usuarios WHERE usuario_id = ?';
+    const sql =
+      "SELECT usuario_id, nombre_usuario, rol FROM usuarios WHERE usuario_id = ?";
     connection.query(sql, [id], (error, results) => {
       connection.release();
 
       if (error) {
         return res.status(500).json({
           status: "error",
-          message: "Error al obtener el usuario"
+          message: "Error al obtener el usuario",
         });
       }
 
       if (results.length === 0) {
         return res.status(404).json({
           status: "error",
-          message: "Usuario no encontrado"
+          message: "Usuario no encontrado",
         });
       }
 
@@ -40,7 +41,7 @@ router.get('/search/:id', (req, res) => {
 });
 
 // Actualizar usuario
-router.put('/update/:id', (req, res) => {
+router.put("/update/:id", (req, res) => {
   const { id } = req.params;
   const { nombre_usuario, contraseña, rol } = req.body;
 
@@ -48,7 +49,7 @@ router.put('/update/:id', (req, res) => {
     if (err) {
       return res.status(500).json({
         status: "error",
-        message: "Error de conexión a la base de datos"
+        message: "Error de conexión a la base de datos",
       });
     }
 
@@ -56,10 +57,12 @@ router.put('/update/:id', (req, res) => {
     let params;
 
     if (contraseña) {
-      sql = 'UPDATE usuarios SET nombre_usuario = ?, contraseña = ?, rol = ? WHERE usuario_id = ?';
+      sql =
+        "UPDATE usuarios SET nombre_usuario = ?, contraseña = ?, rol = ? WHERE usuario_id = ?";
       params = [nombre_usuario, contraseña, rol, id];
     } else {
-      sql = 'UPDATE usuarios SET nombre_usuario = ?, rol = ? WHERE usuario_id = ?';
+      sql =
+        "UPDATE usuarios SET nombre_usuario = ?, rol = ? WHERE usuario_id = ?";
       params = [nombre_usuario, rol, id];
     }
 
@@ -69,20 +72,20 @@ router.put('/update/:id', (req, res) => {
       if (error) {
         return res.status(500).json({
           status: "error",
-          message: "Error al actualizar el usuario"
+          message: "Error al actualizar el usuario",
         });
       }
 
       if (results.affectedRows === 0) {
         return res.status(404).json({
           status: "error",
-          message: "Usuario no encontrado"
+          message: "Usuario no encontrado",
         });
       }
 
       res.json({
         status: "success",
-        message: "Usuario actualizado exitosamente"
+        message: "Usuario actualizado exitosamente",
       });
     });
   });

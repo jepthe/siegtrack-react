@@ -10,7 +10,8 @@ body {
   font-family: Arial, sans-serif;
 }
 
-.login-page {/*fondo del login*/
+.login-page {
+  /*fondo del login*/
   background-color: #b11e1e;
   display: flex;
   justify-content: center;
@@ -19,7 +20,6 @@ body {
   width: 100%;
   margin: 0;
   position: relative;
-  
 }
 
 .login-container {
@@ -28,7 +28,6 @@ body {
   min-width: 400px;
   padding: 20px;
   position: relative;
-  
 }
 
 .login-box {
@@ -57,7 +56,7 @@ body {
 }
 
 .input-group input {
-  width: 90%; /* Ajuste del ancho al 90% para hacerlo más pequeño */
+  width: 90%; /* Ajuste del ancho */
   max-width: 350px; /* Máximo ancho para evitar que crezca demasiado en pantallas grandes */
   padding: 10px;
   padding-right: 40px;
@@ -69,8 +68,6 @@ body {
   margin: 0 auto;
   display: block;
 }
-
-
 
 .toggle-password {
   width: 20px;
@@ -132,8 +129,9 @@ body {
     width: 70%;
   }
 
-  .input-group input, .login-btn {
+  .input-group input,
+  .login-btn {
     width: 100%; /* Ocupan todo el ancho disponible en pantallas pequeñas */
     max-width: none;
-}
+  }
 }

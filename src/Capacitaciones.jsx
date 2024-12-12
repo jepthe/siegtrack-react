@@ -1,12 +1,18 @@
 // src/Capacitaciones.jsx
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './Capacitaciones.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./Capacitaciones.css";
 import { Link } from "react-router-dom";
-import logoEmpresa from '/src/assets/srWhite.png';
-import { useUser } from './context/UserContext'; // Importa el hook useUser
+import logoEmpresa from "/src/assets/srWhite.png";
+import { useUser } from "./context/UserContext"; // Importa el hook useUser
 
-const DeleteModal = ({ isOpen, onClose, capacitacion, onConfirm, isDeleting }) => {
+const DeleteModal = ({
+  isOpen,
+  onClose,
+  capacitacion,
+  onConfirm,
+  isDeleting,
+}) => {
   if (!isOpen) return null;
 
   return (
@@ -17,8 +23,12 @@ const DeleteModal = ({ isOpen, onClose, capacitacion, onConfirm, isDeleting }) =
           <p>¿Está seguro que desea eliminar la siguiente capacitación?</p>
           {capacitacion && (
             <div className="modal-info">
-              <p><strong>ID:</strong> {capacitacion.capacitacion_id}</p>
-              <p><strong>Nombre:</strong> {capacitacion.nombre}</p>
+              <p>
+                <strong>ID:</strong> {capacitacion.capacitacion_id}
+              </p>
+              <p>
+                <strong>Nombre:</strong> {capacitacion.nombre}
+              </p>
             </div>
           )}
           <p className="modal-warning">Esta acción no se puede deshacer.</p>
@@ -36,7 +46,7 @@ const DeleteModal = ({ isOpen, onClose, capacitacion, onConfirm, isDeleting }) =
             onClick={onConfirm}
             disabled={isDeleting}
           >
-            {isDeleting ? 'Eliminando...' : 'Eliminar'}
+            {isDeleting ? "Eliminando..." : "Eliminar"}
           </button>
         </div>
       </div>
@@ -48,14 +58,15 @@ const Capacitaciones = () => {
   const [capacitaciones, setCapacitaciones] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');// buscador
+  const [searchTerm, setSearchTerm] = useState(""); // buscador
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedCapacitacion, setSelectedCapacitacion] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [stats, setStats] = useState({// estadísticas
+  const [stats, setStats] = useState({
+    // estadísticas
     total: 0,
     activas: 0,
-    inactivas: 0
+    inactivas: 0,
   });
   // Obtiene los datos del usuario desde el contexto global
   const { userData, logout } = useUser(); // logout para cerrar sesion
@@ -67,22 +78,26 @@ const Capacitaciones = () => {
 
   const fetchStats = async () => {
     try {
-      const response = await axios.get('http://localhost:5002/cap/capacitaciones/stats'); //estadísticas
+      const response = await axios.get(
+        "http://localhost:5002/cap/capacitaciones/stats"
+      ); //estadísticas
       setStats(response.data);
     } catch (err) {
-      console.error('Error al obtener estadísticas:', err);
+      console.error("Error al obtener estadísticas:", err);
     }
   };
 
   const fetchCapacitaciones = async () => {
     try {
-      const response = await axios.get('http://localhost:5002/cap/capacitaciones');
+      const response = await axios.get(
+        "http://localhost:5002/cap/capacitaciones"
+      );
       setCapacitaciones(response.data);
       setLoading(false);
     } catch (err) {
-      setError(err.response?.data?.message || 'Error al obtener los datos');
+      setError(err.response?.data?.message || "Error al obtener los datos");
       setLoading(false);
-      console.error('Error:', err);
+      console.error("Error:", err);
     }
   };
 
@@ -102,12 +117,14 @@ const Capacitaciones = () => {
       );
 
       if (response.data.success) {
-        alert('Capacitación eliminada exitosamente');
+        alert("Capacitación eliminada exitosamente");
         await fetchCapacitaciones(); // Recargar la lista
       }
     } catch (err) {
-      console.error('Error al eliminar:', err);
-      alert('Error al eliminar la capacitación. Por favor, intente nuevamente.');
+      console.error("Error al eliminar:", err);
+      alert(
+        "Error al eliminar la capacitación. Por favor, intente nuevamente."
+      );
     } finally {
       setIsDeleting(false);
       setDeleteModalOpen(false);
@@ -115,42 +132,36 @@ const Capacitaciones = () => {
     }
   };
 
-
-
-
-  // New search function   //considerár hacer lo de Lodash para la eficiencia de multiples llamadas simultanes 
+  // New search function   //considerár hacer lo de Lodash para la eficiencia de multiples llamadas simultanes
   const handleSearch = async (event) => {
     const query = event.target.value;
     setSearchTerm(query);
 
-    if (query.trim() === '') {
+    if (query.trim() === "") {
       // If search is empty, fetch all capacitaciones
       fetchCapacitaciones();
       return;
     }
 
     try {
-      const response = await axios.get('http://localhost:5002/cap/capacitaciones/search', {
-        params: { query }
-      });
+      const response = await axios.get(
+        "http://localhost:5002/cap/capacitaciones/search",
+        {
+          params: { query },
+        }
+      );
       setCapacitaciones(response.data);
     } catch (err) {
-      console.error('Error searching:', err);
-      setError(err.response?.data?.message || 'Error al buscar capacitaciones');
+      console.error("Error searching:", err);
+      setError(err.response?.data?.message || "Error al buscar capacitaciones");
     }
   };
-
-
-
-
 
   return (
     <div className="dashboard">
       {/* Barra lateral */}
       <aside className="sidebar">
-
         <img src={logoEmpresa} alt="Logo Empresa" className="logo-image" />
-
 
         <nav className="menu">
           <Link to="/home">
@@ -162,17 +173,14 @@ const Capacitaciones = () => {
         <div className="profile">
           <div className="profile-info">
             <div className="avatar">
-              {userData?.nombre?.charAt(0)?.toUpperCase() || 'U'}
+              {userData?.nombre?.charAt(0)?.toUpperCase() || "U"}
             </div>
             <div className="user-details">
-              <span className="user-name">{userData?.nombre || 'Usuario'}</span>
-              <span className="user-role">{userData?.rol || 'Sin rol'}</span>
+              <span className="user-name">{userData?.nombre || "Usuario"}</span>
+              <span className="user-role">{userData?.rol || "Sin rol"}</span>
             </div>
           </div>
-          <button
-            className="logout-btn"
-            onClick={logout}
-          >
+          <button className="logout-btn" onClick={logout}>
             Cerrar Sesión
           </button>
         </div>
@@ -214,11 +222,13 @@ const Capacitaciones = () => {
               onChange={handleSearch}
             />
           </div>
-
         </div>
 
         {/* Tabla */}
-        <div className="table-container" style={{ maxHeight: '400px', overflow: 'auto' }}>
+        <div
+          className="table-container"
+          style={{ maxHeight: "400px", overflow: "auto" }}
+        >
           <table className="data-table">
             <thead>
               <tr>
@@ -234,17 +244,19 @@ const Capacitaciones = () => {
             <tbody>
               {loading ? (
                 <tr key="loading-row">
-                  <td colSpan="7" style={{ textAlign: 'center' }}>Cargando datos...</td>
+                  <td colSpan="7" style={{ textAlign: "center" }}>
+                    Cargando datos...
+                  </td>
                 </tr>
               ) : error ? (
                 <tr key="error-row">
-                  <td colSpan="7" style={{ textAlign: 'center', color: 'red' }}>
+                  <td colSpan="7" style={{ textAlign: "center", color: "red" }}>
                     Error: {error}
                   </td>
                 </tr>
               ) : capacitaciones.length === 0 ? (
                 <tr key="empty-row">
-                  <td colSpan="7" style={{ textAlign: 'center' }}>
+                  <td colSpan="7" style={{ textAlign: "center" }}>
                     No hay capacitaciones disponibles
                   </td>
                 </tr>
@@ -254,20 +266,23 @@ const Capacitaciones = () => {
                     <td>{capacitacion.capacitacion_id}</td>
                     <td>{capacitacion.nombre}</td>
                     <td>{capacitacion.area}</td>
-                    <td>{new Date(capacitacion.fecha_inicio).toLocaleDateString()}</td>
                     <td>
-                      <span className={`status-badge ${capacitacion.estado === 1 ? 'active' :
-                        'notactive'
-
-                        }`}>
-                        {capacitacion.estado === 1 ? 'Activo' :
-                          'Inactivo'}
-
+                      {new Date(capacitacion.fecha_inicio).toLocaleDateString()}
+                    </td>
+                    <td>
+                      <span
+                        className={`status-badge ${
+                          capacitacion.estado === 1 ? "active" : "notactive"
+                        }`}
+                      >
+                        {capacitacion.estado === 1 ? "Activo" : "Inactivo"}
                       </span>
                     </td>
                     <td>{capacitacion.duracion_horas} hrs.</td>
                     <td className="actions">
-                      <Link to={`/editCapacitacion/${capacitacion.capacitacion_id}`}>
+                      <Link
+                        to={`/editCapacitacion/${capacitacion.capacitacion_id}`}
+                      >
                         <button className="edit-btn">Editar</button>
                       </Link>
                       <button
@@ -296,7 +311,6 @@ const Capacitaciones = () => {
         onConfirm={handleConfirmDelete}
         isDeleting={isDeleting}
       />
-
     </div>
   );
 };

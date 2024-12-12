@@ -1,17 +1,17 @@
 // backend/routes/empleados.js
 
-const express = require('express');
-const { pool } = require('../config/db');
+const express = require("express");
+const { pool } = require("../config/db");
 const router = express.Router();
 
 // Obtener todos los empleados
-router.get('/empleados', (req, res) => {
+router.get("/empleados", (req, res) => {
   pool.getConnection((err, connection) => {
     if (err) {
-      console.error('Error al obtener conexión:', err);
+      console.error("Error al obtener conexión:", err);
       return res.status(500).json({
         status: "error",
-        message: "Error de conexión a la base de datos"
+        message: "Error de conexión a la base de datos",
       });
     }
 
@@ -27,15 +27,15 @@ router.get('/empleados', (req, res) => {
         email
       FROM empleados
     `;
-    
+
     connection.query(sql, (error, results) => {
       connection.release();
 
       if (error) {
-        console.error('Error en consulta:', error);
+        console.error("Error en consulta:", error);
         return res.status(500).json({
           status: "error",
-          message: "Error en el servidor"
+          message: "Error en el servidor",
         });
       }
 
@@ -45,15 +45,15 @@ router.get('/empleados', (req, res) => {
 });
 
 // Buscar empleados
-router.get('/empleados/search', (req, res) => {
+router.get("/empleados/search", (req, res) => {
   const { query } = req.query;
 
   pool.getConnection((err, connection) => {
     if (err) {
-      console.error('Error al obtener conexión:', err);
+      console.error("Error al obtener conexión:", err);
       return res.status(500).json({
         status: "error",
-        message: "Error de conexión a la base de datos"
+        message: "Error de conexión a la base de datos",
       });
     }
 
@@ -83,10 +83,10 @@ router.get('/empleados/search', (req, res) => {
       connection.release();
 
       if (error) {
-        console.error('Error en consulta de búsqueda:', error);
+        console.error("Error en consulta de búsqueda:", error);
         return res.status(500).json({
           status: "error",
-          message: "Error en el servidor"
+          message: "Error en el servidor",
         });
       }
 
@@ -96,13 +96,13 @@ router.get('/empleados/search', (req, res) => {
 });
 
 // Obtener estadísticas
-router.get('/empleados/stats', (req, res) => {
+router.get("/empleados/stats", (req, res) => {
   pool.getConnection((err, connection) => {
     if (err) {
-      console.error('Error al obtener conexión:', err);
+      console.error("Error al obtener conexión:", err);
       return res.status(500).json({
         status: "error",
-        message: "Error de conexión a la base de datos"
+        message: "Error de conexión a la base de datos",
       });
     }
 
@@ -118,10 +118,10 @@ router.get('/empleados/stats', (req, res) => {
       connection.release();
 
       if (error) {
-        console.error('Error en consulta:', error);
+        console.error("Error en consulta:", error);
         return res.status(500).json({
           status: "error",
-          message: "Error en el servidor"
+          message: "Error en el servidor",
         });
       }
 

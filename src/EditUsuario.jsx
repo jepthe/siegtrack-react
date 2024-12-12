@@ -1,40 +1,42 @@
 // src/EditUsuario.jsx
 
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom';
-import './AddUsuario.css'; //usa el mismo css de AddUsuario
-import logoEmpresa from '/src/assets/srWhite.png';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useParams, useNavigate } from "react-router-dom";
+import "./AddUsuario.css"; //usa el mismo css de AddUsuario
+import logoEmpresa from "/src/assets/srWhite.png";
 
 const EditUsuario = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    nombre_usuario: '',
-    contraseña: '',
-    confirmar_contraseña: '',
-    rol: ''
+    nombre_usuario: "",
+    contraseña: "",
+    confirmar_contraseña: "",
+    rol: "",
   });
 
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUsuario = async () => {
       try {
-        const response = await axios.get(`http://localhost:5002/edituser/search/${id}`);
+        const response = await axios.get(
+          `http://localhost:5002/edituser/search/${id}`
+        );
         const usuario = response.data;
-        
+
         setFormData({
           nombre_usuario: usuario.nombre_usuario,
-          contraseña: '',
-          confirmar_contraseña: '',
-          rol: usuario.rol
+          contraseña: "",
+          confirmar_contraseña: "",
+          rol: usuario.rol,
         });
         setLoading(false);
       } catch (error) {
-        console.error('Error al cargar los datos:', error);
-        setError('Error al cargar los datos del usuario');
+        console.error("Error al cargar los datos:", error);
+        setError("Error al cargar los datos del usuario");
         setLoading(false);
       }
     };
@@ -44,9 +46,9 @@ const EditUsuario = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -56,7 +58,7 @@ const EditUsuario = () => {
     // Si se está actualizando la contraseña, validar que coincidan
     if (formData.contraseña || formData.confirmar_contraseña) {
       if (formData.contraseña !== formData.confirmar_contraseña) {
-        setError('Las contraseñas no coinciden');
+        setError("Las contraseñas no coinciden");
         return;
       }
     }
@@ -64,7 +66,7 @@ const EditUsuario = () => {
     try {
       const dataToUpdate = {
         nombre_usuario: formData.nombre_usuario,
-        rol: formData.rol
+        rol: formData.rol,
       };
 
       // Solo incluir la contraseña si se ha ingresado una nueva
@@ -72,20 +74,25 @@ const EditUsuario = () => {
         dataToUpdate.contraseña = formData.contraseña;
       }
 
-      const response = await axios.put(`http://localhost:5002/edituser/update/${id}`, dataToUpdate);
+      const response = await axios.put(
+        `http://localhost:5002/edituser/update/${id}`,
+        dataToUpdate
+      );
 
       if (response.data.status === "success") {
-        alert('Usuario actualizado exitosamente');
-        navigate('/usuarios');
+        alert("Usuario actualizado exitosamente");
+        navigate("/usuarios");
       }
     } catch (error) {
-      console.error('Error al actualizar:', error);
-      setError(error.response?.data?.message || 'Error al actualizar el usuario');
+      console.error("Error al actualizar:", error);
+      setError(
+        error.response?.data?.message || "Error al actualizar el usuario"
+      );
     }
   };
 
   const handleCancel = () => {
-    navigate('/usuarios');
+    navigate("/usuarios");
   };
 
   if (loading) {
@@ -110,7 +117,7 @@ const EditUsuario = () => {
 
         <form className="form" onSubmit={handleSubmit}>
           {error && <div className="error-message">{error}</div>}
-          
+
           <div className="form-group">
             <label>Nombre de Usuario</label>
             <input
@@ -124,7 +131,9 @@ const EditUsuario = () => {
 
           <div className="form-row">
             <div className="form-group">
-              <label>Nueva Contraseña (dejar en blanco para mantener la actual)</label>
+              <label>
+                Nueva Contraseña (dejar en blanco para mantener la actual)
+              </label>
               <input
                 type="password"
                 name="contraseña"
@@ -157,7 +166,11 @@ const EditUsuario = () => {
           </div>
 
           <div className="button-group">
-            <button type="button" className="button-cancel" onClick={handleCancel}>
+            <button
+              type="button"
+              className="button-cancel"
+              onClick={handleCancel}
+            >
               Cancelar
             </button>
             <button type="submit" className="button-save">

@@ -16,7 +16,7 @@ body {
 
 /* Barra superior */
 .navbar {
-  background-color: #B11E1E;
+  background-color: #b11e1e;
   height: 80px;
   display: flex;
   align-items: center;
@@ -47,7 +47,7 @@ body {
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  color: #B11E1E;
+  color: #b11e1e;
   font-size: 20px;
 }
 
@@ -67,8 +67,6 @@ body {
   color: rgba(255, 255, 255, 0.8);
   font-size: 12px;
 }
-
-
 
 /* Contenido principal */
 .main-content {
@@ -179,7 +177,6 @@ body {
   color: #6b7280;
 }
 
-
 /* cerrar sesión */
 
 .avatar-wrapper {
@@ -224,8 +221,9 @@ body {
   background-color: #f5f5f5;
 }
 
-.dropdown-menu::before { /*flecha que señala de dónde se va a cerrar la sesión*/
-  content: '';
+.dropdown-menu::before {
+  /*flecha que señala de dónde se va a cerrar la sesión*/
+  content: "";
   position: absolute;
   top: -5px;
   right: 20px;

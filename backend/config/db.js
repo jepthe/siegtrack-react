@@ -1,6 +1,6 @@
 // backend/config/db.js
-const mysql = require('mysql');
-require('dotenv').config();
+const mysql = require("mysql");
+require("dotenv").config();
 
 // Crear el pool de conexiones en lugar de una única conexión
 const pool = mysql.createPool({
@@ -9,7 +9,7 @@ const pool = mysql.createPool({
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  debug: true  // Activar para depuración
+  debug: true, // Activar para depuración
 });
 
 // Función para probar la conexión
@@ -17,30 +17,19 @@ const testConnection = () => {
   return new Promise((resolve, reject) => {
     pool.getConnection((err, connection) => {
       if (err) {
-        console.error('Error al obtener conexión:', err);
+        console.error("Error al obtener conexión:", err);
         reject(err);
         return;
       }
-      
-      console.log('Conexión exitosa a la base de datos');
-      
-      // Ejecutar una consulta de prueba
-      //connection.query('SELECT 1', (error, results) => {
-        // Siempre liberar la conexión
-        connection.release();
-        
-        //if (error) {
-          //console.error('Error en consulta de prueba:', error);
-          //reject(error);
-          //return;
-        //}
-        
-        //console.log('Consulta de prueba exitosa');
-        resolve(true);
-      });
+
+      console.log("Conexión exitosa a la base de datos");
+
+      connection.release();
+
+      resolve(true);
     });
-  
+  });
 };
 
 // Exportar tanto el pool como la función de prueba
-module.exports = {pool, testConnection};
+module.exports = { pool, testConnection };

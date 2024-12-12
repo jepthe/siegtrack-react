@@ -1,27 +1,27 @@
 // src/EditAsignacion.jsx
 
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom';
-import './AddAsignacion.css';
-import logoEmpresa from '/src/assets/srWhite.png';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useParams, useNavigate } from "react-router-dom";
+import "./AddAsignacion.css";
+import logoEmpresa from "/src/assets/srWhite.png";
 
 const EditAsignacion = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    empleado_id: '',
-    capacitacion_id: '',
-    fecha_asignacion: '',
-    fecha_completado: ''
+    empleado_id: "",
+    capacitacion_id: "",
+    fecha_asignacion: "",
+    fecha_completado: "",
   });
 
   const [areas, setAreas] = useState([]);
-  const [selectedArea, setSelectedArea] = useState('');
+  const [selectedArea, setSelectedArea] = useState("");
   const [empleados, setEmpleados] = useState([]);
   const [capacitaciones, setCapacitaciones] = useState([]);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [asignacionOriginal, setAsignacionOriginal] = useState(null);
 
@@ -29,25 +29,30 @@ const EditAsignacion = () => {
   useEffect(() => {
     const fetchAsignacion = async () => {
       try {
-        const response = await axios.get(`http://localhost:5002/editasig/search/${id}`);
+        const response = await axios.get(
+          `http://localhost:5002/editasig/search/${id}`
+        );
         const asignacion = response.data;
         setAsignacionOriginal(asignacion);
-        
+
         // Establecer el área basada en la capacitación asignada
         setSelectedArea(asignacion.area);
-        
+
         setFormData({
           empleado_id: asignacion.empleado_id.toString(),
           capacitacion_id: asignacion.capacitacion_id.toString(),
-          fecha_asignacion: new Date(asignacion.fecha_asignacion).toISOString().split('T')[0],
-          fecha_completado: asignacion.fecha_completado ? 
-            new Date(asignacion.fecha_completado).toISOString().split('T')[0] : ''
+          fecha_asignacion: new Date(asignacion.fecha_asignacion)
+            .toISOString()
+            .split("T")[0],
+          fecha_completado: asignacion.fecha_completado
+            ? new Date(asignacion.fecha_completado).toISOString().split("T")[0]
+            : "",
         });
-        
+
         setLoading(false);
       } catch (error) {
-        console.error('Error al cargar los datos:', error);
-        setError('Error al cargar los datos de la asignación');
+        console.error("Error al cargar los datos:", error);
+        setError("Error al cargar los datos de la asignación");
         setLoading(false);
       }
     };
@@ -59,11 +64,11 @@ const EditAsignacion = () => {
   useEffect(() => {
     const fetchAreas = async () => {
       try {
-        const response = await axios.get('http://localhost:5002/asig/areas');
+        const response = await axios.get("http://localhost:5002/asig/areas");
         setAreas(response.data);
       } catch (error) {
-        console.error('Error al cargar áreas:', error);
-        setError('Error al cargar las áreas');
+        console.error("Error al cargar áreas:", error);
+        setError("Error al cargar las áreas");
       }
     };
 
@@ -76,14 +81,18 @@ const EditAsignacion = () => {
       const fetchEmpleadosYCapacitaciones = async () => {
         try {
           const [empResponse, capResponse] = await Promise.all([
-            axios.get(`http://localhost:5002/asig/empleados-por-area/${selectedArea}`),
-            axios.get(`http://localhost:5002/asig/capacitaciones-por-area/${selectedArea}`)
+            axios.get(
+              `http://localhost:5002/asig/empleados-por-area/${selectedArea}`
+            ),
+            axios.get(
+              `http://localhost:5002/asig/capacitaciones-por-area/${selectedArea}`
+            ),
           ]);
           setEmpleados(empResponse.data);
           setCapacitaciones(capResponse.data);
         } catch (error) {
-          console.error('Error al cargar datos:', error);
-          setError('Error al cargar empleados y capacitaciones');
+          console.error("Error al cargar datos:", error);
+          setError("Error al cargar empleados y capacitaciones");
         }
       };
 
@@ -93,18 +102,18 @@ const EditAsignacion = () => {
 
   const handleAreaChange = (e) => {
     setSelectedArea(e.target.value);
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      empleado_id: '',
-      capacitacion_id: ''
+      empleado_id: "",
+      capacitacion_id: "",
     }));
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -112,20 +121,25 @@ const EditAsignacion = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.put(`http://localhost:5002/editasig/update/${id}`, formData);
+      const response = await axios.put(
+        `http://localhost:5002/editasig/update/${id}`,
+        formData
+      );
 
       if (response.data.status === "success") {
-        alert('Asignación actualizada exitosamente');
-        navigate('/asignaciones');
+        alert("Asignación actualizada exitosamente");
+        navigate("/asignaciones");
       }
     } catch (error) {
-      console.error('Error al actualizar:', error);
-      setError(error.response?.data?.message || 'Error al actualizar la asignación');
+      console.error("Error al actualizar:", error);
+      setError(
+        error.response?.data?.message || "Error al actualizar la asignación"
+      );
     }
   };
 
   const handleCancel = () => {
-    navigate('/asignaciones');
+    navigate("/asignaciones");
   };
 
   if (loading) {
@@ -161,7 +175,9 @@ const EditAsignacion = () => {
             >
               <option value="">Seleccione un área</option>
               {areas.map((area, index) => (
-                <option key={index} value={area}>{area}</option>
+                <option key={index} value={area}>
+                  {area}
+                </option>
               ))}
             </select>
           </div>
@@ -197,7 +213,10 @@ const EditAsignacion = () => {
             >
               <option value="">Seleccione una capacitación</option>
               {capacitaciones.map((capacitacion) => (
-                <option key={capacitacion.capacitacion_id} value={capacitacion.capacitacion_id}>
+                <option
+                  key={capacitacion.capacitacion_id}
+                  value={capacitacion.capacitacion_id}
+                >
                   {capacitacion.nombre} ({capacitacion.duracion_horas} hrs)
                 </option>
               ))}
@@ -229,7 +248,11 @@ const EditAsignacion = () => {
           </div>
 
           <div className="button-group">
-            <button type="button" className="button-cancel" onClick={handleCancel}>
+            <button
+              type="button"
+              className="button-cancel"
+              onClick={handleCancel}
+            >
               Cancelar
             </button>
             <button type="submit" className="button-save">

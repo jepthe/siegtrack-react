@@ -1,34 +1,36 @@
 // src/EditColaborador.jsx
 
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom';
-import './AddColaborador.css';
-import logoEmpresa from '/src/assets/srWhite.png';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useParams, useNavigate } from "react-router-dom";
+import "./AddColaborador.css";
+import logoEmpresa from "/src/assets/srWhite.png";
 
 const EditColaborador = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    nombre: '',
-    apellido_paterno: '',
-    apellido_materno: '',
-    departamento: '',
-    estado: '',
-    puesto: '',
-    email: ''  // Añadir email aquí
+    nombre: "",
+    apellido_paterno: "",
+    apellido_materno: "",
+    departamento: "",
+    estado: "",
+    puesto: "",
+    email: "", // Añadir email aquí
   });
 
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchColaborador = async () => {
       try {
-        const response = await axios.get(`http://localhost:5002/editemp/search/${id}`);
+        const response = await axios.get(
+          `http://localhost:5002/editemp/search/${id}`
+        );
         const empleado = response.data;
-        
+
         setFormData({
           nombre: empleado.nombre,
           apellido_paterno: empleado.apellido_paterno,
@@ -36,12 +38,12 @@ const EditColaborador = () => {
           departamento: empleado.departamento,
           estado: empleado.estado,
           puesto: empleado.puesto,
-          email: empleado.email
+          email: empleado.email,
         });
         setLoading(false);
       } catch (error) {
-        console.error('Error al cargar los datos:', error);
-        setError('Error al cargar los datos del colaborador');
+        console.error("Error al cargar los datos:", error);
+        setError("Error al cargar los datos del colaborador");
         setLoading(false);
       }
     };
@@ -51,9 +53,9 @@ const EditColaborador = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -61,20 +63,25 @@ const EditColaborador = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.put(`http://localhost:5002/editemp/update/${id}`, formData);
+      const response = await axios.put(
+        `http://localhost:5002/editemp/update/${id}`,
+        formData
+      );
 
       if (response.data.status === "success") {
-        alert('Colaborador actualizado exitosamente');
-        navigate('/colaboradores');
+        alert("Colaborador actualizado exitosamente");
+        navigate("/colaboradores");
       }
     } catch (error) {
-      console.error('Error al actualizar:', error);
-      setError(error.response?.data?.message || 'Error al actualizar el colaborador');
+      console.error("Error al actualizar:", error);
+      setError(
+        error.response?.data?.message || "Error al actualizar el colaborador"
+      );
     }
   };
 
   const handleCancel = () => {
-    navigate('/colaboradores');
+    navigate("/colaboradores");
   };
 
   if (loading) {
@@ -184,7 +191,11 @@ const EditColaborador = () => {
           </div>
 
           <div className="button-group">
-            <button type="button" className="button-cancel" onClick={handleCancel}>
+            <button
+              type="button"
+              className="button-cancel"
+              onClick={handleCancel}
+            >
               Cancelar
             </button>
             <button type="submit" className="button-save">

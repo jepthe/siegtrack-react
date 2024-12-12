@@ -1,6 +1,5 @@
 /* src/EditCapacitacion.css */
 
-
 .container {
   display: flex;
   min-height: 100%;
@@ -9,15 +8,11 @@
 /* Sidebar */
 .sidebar {
   width: 250px;
-  background-color: #B11E1E;
+  background-color: #b11e1e;
   display: flex;
   flex-direction: column;
   padding: 20px;
 }
-
-
-
-
 
 /* Main Content */
 .main-content {
@@ -39,10 +34,7 @@
   font-size: 24px;
   color: #1f2937;
   font-weight: bold;
-  
 }
-
-
 
 /* Tabs */
 .tabs {
@@ -57,7 +49,7 @@
 }
 
 .tab.active {
-  background-color: #B11E1E;
+  background-color: #b11e1e;
   color: white;
 }
 
@@ -118,7 +110,7 @@
 .radio-option input[type="radio"] {
   width: 20px;
   height: 20px;
-  accent-color: #B11E1E;
+  accent-color: #b11e1e;
 }
 
 .radio-option label {
@@ -142,15 +134,15 @@
 }
 
 .button-save {
-  background-color: #B11E1E;
+  background-color: #b11e1e;
   color: white;
   border: none;
 }
 
 .button-cancel {
   background-color: white;
-  color: #B11E1E;
-  border: 1px solid #B11E1E;
+  color: #b11e1e;
+  border: 1px solid #b11e1e;
 }
 
 /* Footer */

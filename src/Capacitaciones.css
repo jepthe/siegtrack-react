@@ -3,14 +3,14 @@
 /* Estilos generales */
 .dashboard {
   display: flex;
-  max-height: 100vh;/*full monitor*/
+  max-height: 100vh; /*full monitor*/
   background-color: #f3f4f6;
 }
 
 /* Barra lateral */
 .sidebar {
   width: 250px;
-  background-color: #B11E1E;
+  background-color: #b11e1e;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -24,7 +24,7 @@
 }
 
 .logo-text {
-  color: #B11E1E;
+  color: #b11e1e;
   font-weight: bold;
   font-size: 16px;
 }
@@ -33,10 +33,9 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  
 }
 
-.menu-item{
+.menu-item {
   padding: 12px 30px;
   border-radius: 5px;
   color: white;
@@ -44,16 +43,16 @@
   border: none;
   text-align: left;
   cursor: pointer;
-  width: 100%;/*ancho boton home, porque Link lo recorta*/
+  width: 100%; /*ancho boton home, porque Link lo recorta*/
 }
 
-.menu-item:hover{
-  background-color: #881717; 
-}
-
-.menu-item.active { /*cuando sobreponemos el puntero*/
+.menu-item:hover {
   background-color: #881717;
-  
+}
+
+.menu-item.active {
+  /*cuando sobreponemos el puntero*/
+  background-color: #881717;
 }
 
 /* Perfil de usuario */
@@ -108,8 +107,9 @@
   cursor: pointer;
   font-size: 12px;
 }
-.logout-btn:hover{/*cuando el puntero está sobre el boton*/
-  background-color: #ab2828; 
+.logout-btn:hover {
+  /*cuando el puntero está sobre el boton*/
+  background-color: #ab2828;
 }
 
 /* Contenido principal */
@@ -119,7 +119,6 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  
 }
 
 .main-header {
@@ -135,11 +134,10 @@
 .main-header h1 {
   font-size: 24px;
   font-weight: bold;
-  
 }
 
 .new-training-btn {
-  background-color: #B11E1E;
+  background-color: #b11e1e;
   color: white;
   padding: 10px 20px;
   border: none;
@@ -173,10 +171,16 @@
   font-weight: bold;
 }
 
-.stat-value.purple { color: #4f46e5; }
+.stat-value.purple {
+  color: #4f46e5;
+}
 /*.stat-value.orange { color: #f97316; }*/
-.stat-value.green { color: #22c55e; }
-.stat-value.red { color: #ef4444; }
+.stat-value.green {
+  color: #22c55e;
+}
+.stat-value.red {
+  color: #ef4444;
+}
 
 /* Búsqueda y filtros */
 .search-filters {
@@ -289,16 +293,15 @@
 
 .edit-btn {
   background-color: white;
-  color: #B11E1E;
+  color: #b11e1e;
   padding: 5px 15px;
-  border: 1px solid #B11E1E;
+  border: 1px solid #b11e1e;
   border-radius: 5px;
   cursor: pointer;
-  
 }
 
 .delete-btn {
-  background-color: #B11E1E;
+  background-color: #b11e1e;
   color: white;
   padding: 5px 15px;
   border: none;
@@ -315,8 +318,6 @@
   color: #6b7280;
   font-size: 12px;
 }
-
-
 
 /* Estilos para el modal */
 .modal-overlay {
@@ -401,9 +402,9 @@
   cursor: not-allowed;
 }
 
-
-.logo-image {/* logo */
-  max-width: 20vw;  
+.logo-image {
+  /* logo */
+  max-width: 20vw;
   max-height: 20vh;
   object-fit: contain;
   margin-top: 16px;

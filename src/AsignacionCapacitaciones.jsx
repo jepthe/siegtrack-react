@@ -1,13 +1,19 @@
 // src/AsignacionCapacitaciones.jsx
 
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './AsignacionCapacitaciones.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./AsignacionCapacitaciones.css";
 import { Link } from "react-router-dom";
-import logoEmpresa from '/src/assets/srWhite.png';
-import { useUser } from './context/UserContext';
+import logoEmpresa from "/src/assets/srWhite.png";
+import { useUser } from "./context/UserContext";
 
-const DeleteModal = ({ isOpen, onClose, asignacion, onConfirm, isDeleting }) => {
+const DeleteModal = ({
+  isOpen,
+  onClose,
+  asignacion,
+  onConfirm,
+  isDeleting,
+}) => {
   if (!isOpen) return null;
 
   return (
@@ -18,19 +24,33 @@ const DeleteModal = ({ isOpen, onClose, asignacion, onConfirm, isDeleting }) => 
           <p>¿Está seguro que desea eliminar la siguiente asignación?</p>
           {asignacion && (
             <div className="modal-info">
-              <p><strong>ID Asignación:</strong> {asignacion.asignacion_id}</p>
-              <p><strong>Empleado:</strong> {asignacion.nombre_empleado}</p>
-              <p><strong>Capacitación:</strong> {asignacion.nombre_capacitacion}</p>
+              <p>
+                <strong>ID Asignación:</strong> {asignacion.asignacion_id}
+              </p>
+              <p>
+                <strong>Empleado:</strong> {asignacion.nombre_empleado}
+              </p>
+              <p>
+                <strong>Capacitación:</strong> {asignacion.nombre_capacitacion}
+              </p>
             </div>
           )}
           <p className="modal-warning">Esta acción no se puede deshacer.</p>
         </div>
         <div className="modal-footer">
-          <button className="cancel-btn" onClick={onClose} disabled={isDeleting}>
+          <button
+            className="cancel-btn"
+            onClick={onClose}
+            disabled={isDeleting}
+          >
             Cancelar
           </button>
-          <button className="confirm-delete-btn" onClick={onConfirm} disabled={isDeleting}>
-            {isDeleting ? 'Eliminando...' : 'Eliminar'}
+          <button
+            className="confirm-delete-btn"
+            onClick={onConfirm}
+            disabled={isDeleting}
+          >
+            {isDeleting ? "Eliminando..." : "Eliminar"}
           </button>
         </div>
       </div>
@@ -42,16 +62,16 @@ const AsignacionCapacitaciones = () => {
   const [asignaciones, setAsignaciones] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedAsignacion, setSelectedAsignacion] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [stats, setStats] = useState({
     total: 0,
     completadas: 0,
-    pendientes: 0
+    pendientes: 0,
   });
-  
+
   const { userData, logout } = useUser();
 
   useEffect(() => {
@@ -61,22 +81,26 @@ const AsignacionCapacitaciones = () => {
 
   const fetchStats = async () => {
     try {
-      const response = await axios.get('http://localhost:5002/asig/asignaciones/stats');
+      const response = await axios.get(
+        "http://localhost:5002/asig/asignaciones/stats"
+      );
       setStats(response.data);
     } catch (err) {
-      console.error('Error al obtener estadísticas:', err);
+      console.error("Error al obtener estadísticas:", err);
     }
   };
 
   const fetchAsignaciones = async () => {
     try {
-      const response = await axios.get('http://localhost:5002/asig/asignaciones');
+      const response = await axios.get(
+        "http://localhost:5002/asig/asignaciones"
+      );
       setAsignaciones(response.data);
       setLoading(false);
     } catch (err) {
-      setError(err.response?.data?.message || 'Error al obtener los datos');
+      setError(err.response?.data?.message || "Error al obtener los datos");
       setLoading(false);
-      console.error('Error:', err);
+      console.error("Error:", err);
     }
   };
 
@@ -95,13 +119,13 @@ const AsignacionCapacitaciones = () => {
       );
 
       if (response.data.success) {
-        alert('Asignación eliminada exitosamente');
+        alert("Asignación eliminada exitosamente");
         await fetchAsignaciones();
         await fetchStats();
       }
     } catch (err) {
-      console.error('Error al eliminar:', err);
-      alert('Error al eliminar la asignación. Por favor, intente nuevamente.');
+      console.error("Error al eliminar:", err);
+      alert("Error al eliminar la asignación. Por favor, intente nuevamente.");
     } finally {
       setIsDeleting(false);
       setDeleteModalOpen(false);
@@ -113,25 +137,28 @@ const AsignacionCapacitaciones = () => {
     const query = event.target.value;
     setSearchTerm(query);
 
-    if (query.trim() === '') {
+    if (query.trim() === "") {
       fetchAsignaciones();
       return;
     }
 
     try {
-      const response = await axios.get('http://localhost:5002/asig/asignaciones/search', {
-        params: { query }
-      });
+      const response = await axios.get(
+        "http://localhost:5002/asig/asignaciones/search",
+        {
+          params: { query },
+        }
+      );
       setAsignaciones(response.data);
     } catch (err) {
-      console.error('Error searching:', err);
-      setError(err.response?.data?.message || 'Error al buscar asignaciones');
+      console.error("Error searching:", err);
+      setError(err.response?.data?.message || "Error al buscar asignaciones");
     }
   };
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('es-MX');
+    return date.toLocaleDateString("es-MX");
   };
 
   return (
@@ -148,11 +175,11 @@ const AsignacionCapacitaciones = () => {
         <div className="profile">
           <div className="profile-info">
             <div className="avatar">
-              {userData?.nombre?.charAt(0)?.toUpperCase() || 'U'}
+              {userData?.nombre?.charAt(0)?.toUpperCase() || "U"}
             </div>
             <div className="user-details">
-              <span className="user-name">{userData?.nombre || 'Usuario'}</span>
-              <span className="user-role">{userData?.rol || 'Sin rol'}</span>
+              <span className="user-name">{userData?.nombre || "Usuario"}</span>
+              <span className="user-role">{userData?.rol || "Sin rol"}</span>
             </div>
           </div>
           <button className="logout-btn" onClick={logout}>
@@ -200,7 +227,10 @@ const AsignacionCapacitaciones = () => {
           </div>
         </div>
 
-        <div className="table-container" style={{ maxHeight: '400px', overflow: 'auto' }}>
+        <div
+          className="table-container"
+          style={{ maxHeight: "400px", overflow: "auto" }}
+        >
           <table className="data-table">
             <thead>
               <tr>
@@ -218,17 +248,19 @@ const AsignacionCapacitaciones = () => {
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan="8" style={{ textAlign: 'center' }}>Cargando datos...</td>
+                  <td colSpan="8" style={{ textAlign: "center" }}>
+                    Cargando datos...
+                  </td>
                 </tr>
               ) : error ? (
                 <tr>
-                  <td colSpan="8" style={{ textAlign: 'center', color: 'red' }}>
+                  <td colSpan="8" style={{ textAlign: "center", color: "red" }}>
                     Error: {error}
                   </td>
                 </tr>
               ) : asignaciones.length === 0 ? (
                 <tr>
-                  <td colSpan="8" style={{ textAlign: 'center' }}>
+                  <td colSpan="8" style={{ textAlign: "center" }}>
                     No hay asignaciones disponibles
                   </td>
                 </tr>
@@ -241,10 +273,20 @@ const AsignacionCapacitaciones = () => {
                     <td>{asignacion.nombre_capacitacion}</td>
                     <td>{asignacion.area}</td>
                     <td>{formatDate(asignacion.fecha_asignacion)}</td>
-                    <td>{asignacion.fecha_completado ? formatDate(asignacion.fecha_completado) : '-'}</td>
                     <td>
-                      <span className={`status-badge ${asignacion.fecha_completado ? 'completed' : 'pending'}`}>
-                        {asignacion.fecha_completado ? 'Completada' : 'Pendiente'}
+                      {asignacion.fecha_completado
+                        ? formatDate(asignacion.fecha_completado)
+                        : "-"}
+                    </td>
+                    <td>
+                      <span
+                        className={`status-badge ${
+                          asignacion.fecha_completado ? "completed" : "pending"
+                        }`}
+                      >
+                        {asignacion.fecha_completado
+                          ? "Completada"
+                          : "Pendiente"}
                       </span>
                     </td>
                     <td className="actions">

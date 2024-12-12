@@ -1,11 +1,11 @@
 // src/Colaboradores.jsx
 
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './Colaboradores.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./Colaboradores.css";
 import { Link } from "react-router-dom";
-import logoEmpresa from '/src/assets/srWhite.png';
-import { useUser } from './context/UserContext';
+import logoEmpresa from "/src/assets/srWhite.png";
+import { useUser } from "./context/UserContext";
 
 const DeleteModal = ({ isOpen, onClose, empleado, onConfirm, isDeleting }) => {
   if (!isOpen) return null;
@@ -18,9 +18,16 @@ const DeleteModal = ({ isOpen, onClose, empleado, onConfirm, isDeleting }) => {
           <p>¿Está seguro que desea eliminar al siguiente colaborador?</p>
           {empleado && (
             <div className="modal-info">
-              <p><strong>ID:</strong> {empleado.empleado_id}</p>
-              <p><strong>Nombre:</strong> {empleado.nombre} {empleado.apellido_paterno} {empleado.apellido_materno}</p>
-              <p><strong>Departamento:</strong> {empleado.departamento}</p>
+              <p>
+                <strong>ID:</strong> {empleado.empleado_id}
+              </p>
+              <p>
+                <strong>Nombre:</strong> {empleado.nombre}{" "}
+                {empleado.apellido_paterno} {empleado.apellido_materno}
+              </p>
+              <p>
+                <strong>Departamento:</strong> {empleado.departamento}
+              </p>
             </div>
           )}
           <p className="modal-warning">Esta acción no se puede deshacer.</p>
@@ -38,7 +45,7 @@ const DeleteModal = ({ isOpen, onClose, empleado, onConfirm, isDeleting }) => {
             onClick={onConfirm}
             disabled={isDeleting}
           >
-            {isDeleting ? 'Eliminando...' : 'Eliminar'}
+            {isDeleting ? "Eliminando..." : "Eliminar"}
           </button>
         </div>
       </div>
@@ -50,14 +57,14 @@ const Colaboradores = () => {
   const [empleados, setEmpleados] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [selectedEmpleado, setSelectedEmpleado] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [stats, setStats] = useState({
     total: 0,
     activos: 0,
-    inactivos: 0
+    inactivos: 0,
   });
 
   const { userData, logout } = useUser();
@@ -69,22 +76,24 @@ const Colaboradores = () => {
 
   const fetchStats = async () => {
     try {
-      const response = await axios.get('http://localhost:5002/emp/empleados/stats');
+      const response = await axios.get(
+        "http://localhost:5002/emp/empleados/stats"
+      );
       setStats(response.data);
     } catch (err) {
-      console.error('Error al obtener estadísticas:', err);
+      console.error("Error al obtener estadísticas:", err);
     }
   };
 
   const fetchEmpleados = async () => {
     try {
-      const response = await axios.get('http://localhost:5002/emp/empleados');
+      const response = await axios.get("http://localhost:5002/emp/empleados");
       setEmpleados(response.data);
       setLoading(false);
     } catch (err) {
-      setError(err.response?.data?.message || 'Error al obtener los datos');
+      setError(err.response?.data?.message || "Error al obtener los datos");
       setLoading(false);
-      console.error('Error:', err);
+      console.error("Error:", err);
     }
   };
 
@@ -103,13 +112,13 @@ const Colaboradores = () => {
       );
 
       if (response.data.success) {
-        alert('Colaborador eliminado exitosamente');
+        alert("Colaborador eliminado exitosamente");
         await fetchEmpleados();
         await fetchStats();
       }
     } catch (err) {
-      console.error('Error al eliminar:', err);
-      alert('Error al eliminar el colaborador. Por favor, intente nuevamente.');
+      console.error("Error al eliminar:", err);
+      alert("Error al eliminar el colaborador. Por favor, intente nuevamente.");
     } finally {
       setIsDeleting(false);
       setDeleteModalOpen(false);
@@ -121,19 +130,22 @@ const Colaboradores = () => {
     const query = event.target.value;
     setSearchTerm(query);
 
-    if (query.trim() === '') {
+    if (query.trim() === "") {
       fetchEmpleados();
       return;
     }
 
     try {
-      const response = await axios.get('http://localhost:5002/emp/empleados/search', {
-        params: { query }
-      });
+      const response = await axios.get(
+        "http://localhost:5002/emp/empleados/search",
+        {
+          params: { query },
+        }
+      );
       setEmpleados(response.data);
     } catch (err) {
-      console.error('Error searching:', err);
-      setError(err.response?.data?.message || 'Error al buscar colaboradores');
+      console.error("Error searching:", err);
+      setError(err.response?.data?.message || "Error al buscar colaboradores");
     }
   };
 
@@ -151,11 +163,11 @@ const Colaboradores = () => {
         <div className="profile">
           <div className="profile-info">
             <div className="avatar">
-              {userData?.nombre?.charAt(0)?.toUpperCase() || 'U'}
+              {userData?.nombre?.charAt(0)?.toUpperCase() || "U"}
             </div>
             <div className="user-details">
-              <span className="user-name">{userData?.nombre || 'Usuario'}</span>
-              <span className="user-role">{userData?.rol || 'Sin rol'}</span>
+              <span className="user-name">{userData?.nombre || "Usuario"}</span>
+              <span className="user-role">{userData?.rol || "Sin rol"}</span>
             </div>
           </div>
           <button className="logout-btn" onClick={logout}>
@@ -198,7 +210,10 @@ const Colaboradores = () => {
           </div>
         </div>
 
-        <div className="table-container" style={{ maxHeight: '400px', overflow: 'auto' }}>
+        <div
+          className="table-container"
+          style={{ maxHeight: "400px", overflow: "auto" }}
+        >
           <table className="data-table">
             <thead>
               <tr>
@@ -214,17 +229,19 @@ const Colaboradores = () => {
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan="6" style={{ textAlign: 'center' }}>Cargando datos...</td>
+                  <td colSpan="6" style={{ textAlign: "center" }}>
+                    Cargando datos...
+                  </td>
                 </tr>
               ) : error ? (
                 <tr>
-                  <td colSpan="6" style={{ textAlign: 'center', color: 'red' }}>
+                  <td colSpan="6" style={{ textAlign: "center", color: "red" }}>
                     Error: {error}
                   </td>
                 </tr>
               ) : empleados.length === 0 ? (
                 <tr>
-                  <td colSpan="6" style={{ textAlign: 'center' }}>
+                  <td colSpan="6" style={{ textAlign: "center" }}>
                     No hay colaboradores disponibles
                   </td>
                 </tr>
@@ -233,13 +250,20 @@ const Colaboradores = () => {
                   <tr key={empleado.empleado_id}>
                     <td>{empleado.empleado_id}</td>
                     <td>
-                      {empleado.nombre} {empleado.apellido_paterno} {empleado.apellido_materno}
+                      {empleado.nombre} {empleado.apellido_paterno}{" "}
+                      {empleado.apellido_materno}
                     </td>
                     <td>{empleado.email}</td>
                     <td>{empleado.departamento}</td>
                     <td>{empleado.puesto}</td>
                     <td>
-                      <span className={`status-badge ${empleado.estado.toLowerCase() === 'activo' ? 'active' : 'inactive'}`}>
+                      <span
+                        className={`status-badge ${
+                          empleado.estado.toLowerCase() === "activo"
+                            ? "active"
+                            : "inactive"
+                        }`}
+                      >
                         {empleado.estado}
                       </span>
                     </td>

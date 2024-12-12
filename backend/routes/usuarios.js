@@ -1,17 +1,17 @@
 // backend/routes/usuarios.js
 
-const express = require('express');
-const { pool } = require('../config/db');
+const express = require("express");
+const { pool } = require("../config/db");
 const router = express.Router();
 
 // Obtener todos los usuarios
-router.get('/usuarios', (req, res) => {
+router.get("/usuarios", (req, res) => {
   pool.getConnection((err, connection) => {
     if (err) {
-      console.error('Error al obtener conexión:', err);
+      console.error("Error al obtener conexión:", err);
       return res.status(500).json({
         status: "error",
-        message: "Error de conexión a la base de datos"
+        message: "Error de conexión a la base de datos",
       });
     }
 
@@ -20,10 +20,10 @@ router.get('/usuarios', (req, res) => {
       connection.release();
 
       if (error) {
-        console.error('Error en consulta:', error);
+        console.error("Error en consulta:", error);
         return res.status(500).json({
           status: "error",
-          message: "Error en el servidor"
+          message: "Error en el servidor",
         });
       }
 
@@ -33,15 +33,15 @@ router.get('/usuarios', (req, res) => {
 });
 
 // Buscar usuarios
-router.get('/usuarios/search', (req, res) => {
+router.get("/usuarios/search", (req, res) => {
   const { query } = req.query;
 
   pool.getConnection((err, connection) => {
     if (err) {
-      console.error('Error al obtener conexión:', err);
+      console.error("Error al obtener conexión:", err);
       return res.status(500).json({
         status: "error",
-        message: "Error de conexión a la base de datos"
+        message: "Error de conexión a la base de datos",
       });
     }
 
@@ -56,30 +56,34 @@ router.get('/usuarios/search', (req, res) => {
 
     const searchTerm = `%${query}%`;
 
-    connection.query(sql, [searchTerm, searchTerm, searchTerm], (error, results) => {
-      connection.release();
+    connection.query(
+      sql,
+      [searchTerm, searchTerm, searchTerm],
+      (error, results) => {
+        connection.release();
 
-      if (error) {
-        console.error('Error en consulta de búsqueda:', error);
-        return res.status(500).json({
-          status: "error",
-          message: "Error en el servidor"
-        });
+        if (error) {
+          console.error("Error en consulta de búsqueda:", error);
+          return res.status(500).json({
+            status: "error",
+            message: "Error en el servidor",
+          });
+        }
+
+        res.json(results);
       }
-
-      res.json(results);
-    });
+    );
   });
 });
 
 // Obtener estadísticas de usuarios
-router.get('/usuarios/stats', (req, res) => {
+router.get("/usuarios/stats", (req, res) => {
   pool.getConnection((err, connection) => {
     if (err) {
-      console.error('Error al obtener conexión:', err);
+      console.error("Error al obtener conexión:", err);
       return res.status(500).json({
         status: "error",
-        message: "Error de conexión a la base de datos"
+        message: "Error de conexión a la base de datos",
       });
     }
 
@@ -95,10 +99,10 @@ router.get('/usuarios/stats', (req, res) => {
       connection.release();
 
       if (error) {
-        console.error('Error en consulta:', error);
+        console.error("Error en consulta:", error);
         return res.status(500).json({
           status: "error",
-          message: "Error en el servidor"
+          message: "Error en el servidor",
         });
       }
 

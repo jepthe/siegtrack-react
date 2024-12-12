@@ -1,35 +1,37 @@
 // src/AsignacionMasiva.jsx
 
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './AsignacionMasiva.css';
-import { useNavigate } from 'react-router-dom';
-import logoEmpresa from '/src/assets/srWhite.png';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./AsignacionMasiva.css";
+import { useNavigate } from "react-router-dom";
+import logoEmpresa from "/src/assets/srWhite.png";
 
 const AsignacionMasiva = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    area: '',
+    area: "",
     empleados: [],
     capacitaciones: [],
-    fecha_asignacion: new Date().toISOString().split('T')[0]
+    fecha_asignacion: new Date().toISOString().split("T")[0],
   });
 
   const [areas, setAreas] = useState([]);
   const [empleadosDisponibles, setEmpleadosDisponibles] = useState([]);
-  const [capacitacionesDisponibles, setCapacitacionesDisponibles] = useState([]);
-  const [error, setError] = useState('');
+  const [capacitacionesDisponibles, setCapacitacionesDisponibles] = useState(
+    []
+  );
+  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   // Cargar áreas
   useEffect(() => {
     const fetchAreas = async () => {
       try {
-        const response = await axios.get('http://localhost:5002/asig/areas');
+        const response = await axios.get("http://localhost:5002/asig/areas");
         setAreas(response.data);
       } catch (err) {
-        setError('Error al cargar las áreas');
+        setError("Error al cargar las áreas");
       }
     };
     fetchAreas();
@@ -41,13 +43,17 @@ const AsignacionMasiva = () => {
       const fetchData = async () => {
         try {
           const [empResponse, capResponse] = await Promise.all([
-            axios.get(`http://localhost:5002/asig/empleados-por-area/${formData.area}`),
-            axios.get(`http://localhost:5002/asig/capacitaciones-por-area/${formData.area}`)
+            axios.get(
+              `http://localhost:5002/asig/empleados-por-area/${formData.area}`
+            ),
+            axios.get(
+              `http://localhost:5002/asig/capacitaciones-por-area/${formData.area}`
+            ),
           ]);
           setEmpleadosDisponibles(empResponse.data);
           setCapacitacionesDisponibles(capResponse.data);
         } catch (err) {
-          setError('Error al cargar empleados o capacitaciones');
+          setError("Error al cargar empleados o capacitaciones");
         }
       };
       fetchData();
@@ -59,58 +65,72 @@ const AsignacionMasiva = () => {
     setFormData({
       ...formData,
       [name]: value,
-      empleados: name === 'area' ? [] : formData.empleados,
-      capacitaciones: name === 'area' ? [] : formData.capacitaciones
+      empleados: name === "area" ? [] : formData.empleados,
+      capacitaciones: name === "area" ? [] : formData.capacitaciones,
     });
   };
 
   const handleEmpleadosChange = (e) => {
-    const selectedOptions = Array.from(e.target.selectedOptions, option => option.value);
+    const selectedOptions = Array.from(
+      e.target.selectedOptions,
+      (option) => option.value
+    );
     setFormData({
       ...formData,
-      empleados: selectedOptions
+      empleados: selectedOptions,
     });
   };
 
   const handleCapacitacionesChange = (e) => {
-    const selectedOptions = Array.from(e.target.selectedOptions, option => option.value);
+    const selectedOptions = Array.from(
+      e.target.selectedOptions,
+      (option) => option.value
+    );
     setFormData({
       ...formData,
-      capacitaciones: selectedOptions
+      capacitaciones: selectedOptions,
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    setError('');
+    setError("");
 
-    if (formData.empleados.length === 0 || formData.capacitaciones.length === 0) {
-      setError('Debe seleccionar al menos un empleado y una capacitación');
+    if (
+      formData.empleados.length === 0 ||
+      formData.capacitaciones.length === 0
+    ) {
+      setError("Debe seleccionar al menos un empleado y una capacitación");
       setIsLoading(false);
       return;
     }
 
     try {
-      const response = await axios.post('http://localhost:5002/addasig/create-multiple', {
-        empleados: formData.empleados,
-        capacitaciones: formData.capacitaciones,
-        fecha_asignacion: formData.fecha_asignacion
-      });
+      const response = await axios.post(
+        "http://localhost:5002/addasig/create-multiple",
+        {
+          empleados: formData.empleados,
+          capacitaciones: formData.capacitaciones,
+          fecha_asignacion: formData.fecha_asignacion,
+        }
+      );
 
       if (response.data.status === "success") {
-        alert('Asignaciones creadas exitosamente');
-        navigate('/asignaciones');
+        alert("Asignaciones creadas exitosamente");
+        navigate("/asignaciones");
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Error al crear las asignaciones');
+      setError(
+        err.response?.data?.message || "Error al crear las asignaciones"
+      );
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleCancel = () => {
-    navigate('/asignaciones');
+    navigate("/asignaciones");
   };
 
   return (
@@ -142,7 +162,9 @@ const AsignacionMasiva = () => {
             >
               <option value="">Seleccione un área</option>
               {areas.map((area, index) => (
-                <option key={index} value={area}>{area}</option>
+                <option key={index} value={area}>
+                  {area}
+                </option>
               ))}
             </select>
           </div>
@@ -159,13 +181,17 @@ const AsignacionMasiva = () => {
                 disabled={!formData.area}
               >
                 {empleadosDisponibles.map((empleado) => (
-                  <option key={empleado.empleado_id} value={empleado.empleado_id}>
+                  <option
+                    key={empleado.empleado_id}
+                    value={empleado.empleado_id}
+                  >
                     {empleado.nombre_completo} - {empleado.puesto}
                   </option>
                 ))}
               </select>
               <small className="help-text">
-                Mantén presionada la tecla Ctrl para seleccionar múltiples empleados
+                Mantén presionada la tecla Ctrl para seleccionar múltiples
+                empleados
               </small>
             </div>
 
@@ -180,13 +206,17 @@ const AsignacionMasiva = () => {
                 disabled={!formData.area}
               >
                 {capacitacionesDisponibles.map((capacitacion) => (
-                  <option key={capacitacion.capacitacion_id} value={capacitacion.capacitacion_id}>
+                  <option
+                    key={capacitacion.capacitacion_id}
+                    value={capacitacion.capacitacion_id}
+                  >
                     {capacitacion.nombre} ({capacitacion.duracion_horas} hrs)
                   </option>
                 ))}
               </select>
               <small className="help-text">
-                Mantén presionada la tecla Ctrl para seleccionar múltiples capacitaciones
+                Mantén presionada la tecla Ctrl para seleccionar múltiples
+                capacitaciones
               </small>
             </div>
           </div>
@@ -204,15 +234,15 @@ const AsignacionMasiva = () => {
           </div>
 
           <div className="button-group">
-            <button type="button" className="button-cancel" onClick={handleCancel}>
+            <button
+              type="button"
+              className="button-cancel"
+              onClick={handleCancel}
+            >
               Cancelar
             </button>
-            <button 
-              type="submit" 
-              className="button-save"
-              disabled={isLoading}
-            >
-              {isLoading ? 'Guardando...' : 'Guardar'}
+            <button type="submit" className="button-save" disabled={isLoading}>
+              {isLoading ? "Guardando..." : "Guardar"}
             </button>
           </div>
         </form>

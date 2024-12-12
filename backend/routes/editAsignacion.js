@@ -1,18 +1,18 @@
 // backend/routes/editAsignacion.js
 
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { pool } = require('../config/db');
+const { pool } = require("../config/db");
 
 // Obtener asignación por ID
-router.get('/search/:id', (req, res) => {
+router.get("/search/:id", (req, res) => {
   const { id } = req.params;
 
   pool.getConnection((err, connection) => {
     if (err) {
       return res.status(500).json({
         status: "error",
-        message: "Error de conexión a la base de datos"
+        message: "Error de conexión a la base de datos",
       });
     }
 
@@ -34,14 +34,14 @@ router.get('/search/:id', (req, res) => {
       if (error) {
         return res.status(500).json({
           status: "error",
-          message: "Error al obtener la asignación"
+          message: "Error al obtener la asignación",
         });
       }
 
       if (results.length === 0) {
         return res.status(404).json({
           status: "error",
-          message: "Asignación no encontrada"
+          message: "Asignación no encontrada",
         });
       }
 
@@ -51,33 +51,29 @@ router.get('/search/:id', (req, res) => {
 });
 
 // Actualizar asignación
-router.put('/update/:id', (req, res) => {
+router.put("/update/:id", (req, res) => {
   const { id } = req.params;
-  const {
-    empleado_id,
-    capacitacion_id,
-    fecha_asignacion,
-    fecha_completado
-  } = req.body;
+  const { empleado_id, capacitacion_id, fecha_asignacion, fecha_completado } =
+    req.body;
 
   pool.getConnection((err, connection) => {
     if (err) {
       return res.status(500).json({
         status: "error",
-        message: "Error de conexión a la base de datos"
+        message: "Error de conexión a la base de datos",
       });
     }
 
     // Verificar que la nueva combinación empleado-capacitación no exista
     connection.query(
-      'SELECT * FROM asignaciones_capacitaciones WHERE empleado_id = ? AND capacitacion_id = ? AND asignacion_id != ?',
+      "SELECT * FROM asignaciones_capacitaciones WHERE empleado_id = ? AND capacitacion_id = ? AND asignacion_id != ?",
       [empleado_id, capacitacion_id, id],
       (error, results) => {
         if (error) {
           connection.release();
           return res.status(500).json({
             status: "error",
-            message: "Error al verificar la asignación"
+            message: "Error al verificar la asignación",
           });
         }
 
@@ -85,7 +81,7 @@ router.put('/update/:id', (req, res) => {
           connection.release();
           return res.status(400).json({
             status: "error",
-            message: "Esta capacitación ya está asignada a este empleado"
+            message: "Esta capacitación ya está asignada a este empleado",
           });
         }
 
@@ -102,27 +98,33 @@ router.put('/update/:id', (req, res) => {
 
         connection.query(
           sql,
-          [empleado_id, capacitacion_id, fecha_asignacion, fecha_completado || null, id],
+          [
+            empleado_id,
+            capacitacion_id,
+            fecha_asignacion,
+            fecha_completado || null,
+            id,
+          ],
           (error, results) => {
             connection.release();
 
             if (error) {
               return res.status(500).json({
                 status: "error",
-                message: "Error al actualizar la asignación"
+                message: "Error al actualizar la asignación",
               });
             }
 
             if (results.affectedRows === 0) {
               return res.status(404).json({
                 status: "error",
-                message: "Asignación no encontrada"
+                message: "Asignación no encontrada",
               });
             }
 
             res.json({
               status: "success",
-              message: "Asignación actualizada exitosamente"
+              message: "Asignación actualizada exitosamente",
             });
           }
         );

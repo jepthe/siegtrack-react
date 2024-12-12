@@ -1,29 +1,29 @@
 // src/AddColaborador.jsx
 
-import React, { useState } from 'react';
-import axios from 'axios';
-import './AddColaborador.css';
-import { useNavigate } from 'react-router-dom';
-import logoEmpresa from '/src/assets/srWhite.png';
+import React, { useState } from "react";
+import axios from "axios";
+import "./AddColaborador.css";
+import { useNavigate } from "react-router-dom";
+import logoEmpresa from "/src/assets/srWhite.png";
 
 const AddColaborador = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    nombre: '',
-    apellido_paterno: '',
-    apellido_materno: '',
-    departamento: '',
-    estado: 'Activo',
-    puesto: '',
-    email: '' // Nuevo campo
+    nombre: "",
+    apellido_paterno: "",
+    apellido_materno: "",
+    departamento: "",
+    estado: "Activo",
+    puesto: "",
+    email: "", // Nuevo campo
   });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -31,20 +31,23 @@ const AddColaborador = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:5002/addemp/create', formData);
+      const response = await axios.post(
+        "http://localhost:5002/addemp/create",
+        formData
+      );
 
       if (response.data.status === "success") {
-        alert('Colaborador guardado exitosamente');
-        navigate('/colaboradores');
+        alert("Colaborador guardado exitosamente");
+        navigate("/colaboradores");
       }
     } catch (error) {
-      console.error('Error al guardar el colaborador:', error);
-      alert(error.response?.data?.message || 'Error al guardar el colaborador');
+      console.error("Error al guardar el colaborador:", error);
+      alert(error.response?.data?.message || "Error al guardar el colaborador");
     }
   };
 
   const handleCancel = () => {
-    navigate('/colaboradores');
+    navigate("/colaboradores");
   };
 
   return (
@@ -120,19 +123,18 @@ const AddColaborador = () => {
                 required
               />
             </div>
-            
-            <div className="form-group">
-                <label>Correo Electrónico</label>
-                <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    required
-                    placeholder="correo@ejemplo.com"
-                />
-            </div>
 
+            <div className="form-group">
+              <label>Correo Electrónico</label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                required
+                placeholder="correo@ejemplo.com"
+              />
+            </div>
           </div>
 
           <div className="form-group">
@@ -149,7 +151,11 @@ const AddColaborador = () => {
           </div>
 
           <div className="button-group">
-            <button type="button" className="button-cancel" onClick={handleCancel}>
+            <button
+              type="button"
+              className="button-cancel"
+              onClick={handleCancel}
+            >
               Cancelar
             </button>
             <button type="submit" className="button-save">

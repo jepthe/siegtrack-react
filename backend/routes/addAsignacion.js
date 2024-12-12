@@ -1,10 +1,14 @@
 const express = require("express");
 const { pool } = require("../config/db");
-const { sendMail } = require('../config/mailConfig');
+const { sendMail } = require("../config/mailConfig");
 const util = require("util");
 
 // Función auxiliar para obtener detalles del empleado y capacitación
-const getAssignmentDetails = async (connection, empleado_id, capacitacion_id) => {
+const getAssignmentDetails = async (
+  connection,
+  empleado_id,
+  capacitacion_id
+) => {
   const query = util.promisify(connection.query).bind(connection);
   const sql = `
     SELECT 
@@ -19,7 +23,7 @@ const getAssignmentDetails = async (connection, empleado_id, capacitacion_id) =>
     JOIN capacitaciones c ON c.capacitacion_id = ?
     WHERE e.empleado_id = ?
   `;
-  
+
   const results = await query(sql, [capacitacion_id, empleado_id]);
   return results[0];
 };
@@ -35,7 +39,9 @@ const sendNotificationEmail = async (details, fecha_asignacion) => {
       <li><strong>Descripción:</strong> ${details.descripcion}</li>
       <li><strong>Duración:</strong> ${details.duracion_horas} horas</li>
       <li><strong>Modalidad:</strong> ${details.modalidad}</li>
-      <li><strong>Fecha de Asignación:</strong> ${new Date(fecha_asignacion).toLocaleDateString()}</li>
+      <li><strong>Fecha de Asignación:</strong> ${new Date(
+        fecha_asignacion
+      ).toLocaleDateString()}</li>
     </ul>
     <p>Por favor, ingrese al sistema para ver más detalles de la capacitación.</p>
     <p>Saludos cordiales,<br>Sistema SiegTrack</p>
@@ -43,7 +49,7 @@ const sendNotificationEmail = async (details, fecha_asignacion) => {
 
   return sendMail(
     details.email,
-    'Nueva Capacitación Asignada - SiegTrack',
+    "Nueva Capacitación Asignada - SiegTrack",
     emailHtml
   );
 };
@@ -52,12 +58,14 @@ const router = express.Router();
 
 // Crear nueva asignación
 router.post("/create", async (req, res) => {
-  const { empleado_id, capacitacion_id, fecha_asignacion, fecha_completado } = req.body;
+  const { empleado_id, capacitacion_id, fecha_asignacion, fecha_completado } =
+    req.body;
 
   if (!empleado_id || !capacitacion_id || !fecha_asignacion) {
     return res.status(400).json({
       status: "error",
-      message: "Faltan campos requeridos (empleado_id, capacitacion_id, fecha_asignacion)",
+      message:
+        "Faltan campos requeridos (empleado_id, capacitacion_id, fecha_asignacion)",
     });
   }
 
@@ -92,11 +100,20 @@ router.post("/create", async (req, res) => {
         `INSERT INTO asignaciones_capacitaciones 
          (empleado_id, capacitacion_id, fecha_asignacion, fecha_completado)
          VALUES (?, ?, ?, ?)`,
-        [empleado_id, capacitacion_id, fecha_asignacion, fecha_completado || null]
+        [
+          empleado_id,
+          capacitacion_id,
+          fecha_asignacion,
+          fecha_completado || null,
+        ]
       );
 
       // Obtener detalles y enviar correo
-      const details = await getAssignmentDetails(connection, empleado_id, capacitacion_id);
+      const details = await getAssignmentDetails(
+        connection,
+        empleado_id,
+        capacitacion_id
+      );
       if (details && details.email) {
         await sendNotificationEmail(details, fecha_asignacion);
       }
@@ -107,7 +124,6 @@ router.post("/create", async (req, res) => {
         message: "Asignación creada exitosamente y notificación enviada",
         data: { id: result.insertId },
       });
-
     } catch (error) {
       connection.release();
       console.error("Error:", error);
@@ -133,7 +149,9 @@ router.post("/create-multiple", async (req, res) => {
     }
 
     const query = util.promisify(connection.query).bind(connection);
-    const beginTransaction = util.promisify(connection.beginTransaction).bind(connection);
+    const beginTransaction = util
+      .promisify(connection.beginTransaction)
+      .bind(connection);
     const commit = util.promisify(connection.commit).bind(connection);
     const rollback = util.promisify(connection.rollback).bind(connection);
 
@@ -154,11 +172,17 @@ router.post("/create-multiple", async (req, res) => {
 
           if (existingRows.length === 0) {
             values.push([empleado_id, capacitacion_id, fecha_asignacion]);
-            
+
             // Obtener detalles y preparar correo
-            const details = await getAssignmentDetails(connection, empleado_id, capacitacion_id);
+            const details = await getAssignmentDetails(
+              connection,
+              empleado_id,
+              capacitacion_id
+            );
             if (details && details.email) {
-              emailPromises.push(sendNotificationEmail(details, fecha_asignacion));
+              emailPromises.push(
+                sendNotificationEmail(details, fecha_asignacion)
+              );
             }
           } else {
             existingAssignments.push({ empleado_id, capacitacion_id });
@@ -189,7 +213,6 @@ router.post("/create-multiple", async (req, res) => {
           detalles_existentes: existingAssignments,
         },
       });
-
     } catch (error) {
       await rollback();
       connection.release();

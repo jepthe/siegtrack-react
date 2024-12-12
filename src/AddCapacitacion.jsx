@@ -1,37 +1,36 @@
 // src/addCapacitacion.jsx
-import React, { useState } from 'react';
-import axios from 'axios';
-import './AddCapacitacion.css';
-import { useNavigate } from 'react-router-dom';
-import logoEmpresa from '/src/assets/srWhite.png';
+import React, { useState } from "react";
+import axios from "axios";
+import "./AddCapacitacion.css";
+import { useNavigate } from "react-router-dom";
+import logoEmpresa from "/src/assets/srWhite.png";
 
 const AddCapacitacion = () => {
-
-  const navigate = useNavigate();//para ir a cap cuando se de en cancelar
+  const navigate = useNavigate(); //para ir a cap cuando se de en cancelar
 
   const [formData, setFormData] = useState({
-    nombre: '',
-    descripcion: '',
-    area: '',
-    estado: '',
-    modalidad: 'presencial',
-    fecha_inicio: '',
-    fecha_fin: '',
-    duracion_horas: ''
+    nombre: "",
+    descripcion: "",
+    area: "",
+    estado: "",
+    modalidad: "presencial",
+    fecha_inicio: "",
+    fecha_fin: "",
+    duracion_horas: "",
   });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const handleModalidadChange = (e) => {
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
-      modalidad: e.target.id
+      modalidad: e.target.id,
     }));
   };
 
@@ -39,34 +38,37 @@ const AddCapacitacion = () => {
     e.preventDefault();
 
     try {
-
-
-      console.log('Datos a enviar:', formData);
-      const response = await axios.post('http://localhost:5002/addcap/create', formData);
+      console.log("Datos a enviar:", formData);
+      const response = await axios.post(
+        "http://localhost:5002/addcap/create",
+        formData
+      );
 
       if (response.data.status === "success") {
-        alert('Capacitación guardada exitosamente');
-        navigate('/capacitaciones'); // Mover la navegación aquí
+        alert("Capacitación guardada exitosamente");
+        navigate("/capacitaciones"); // Mover la navegación aquí
       }
     } catch (error) {
-      console.error('Error al guardar la capacitación:', error);
-      alert('Error al guardar la capacitación');
+      console.error("Error al guardar la capacitación:", error);
+      alert("Error al guardar la capacitación");
     }
   };
 
-  const handleCancel = () => { //para regresar cuando le de en cancelar
-    navigate('/capacitaciones');
+  const handleCancel = () => {
+    //para regresar cuando le de en cancelar
+    navigate("/capacitaciones");
   };
 
-  const handleAdd = () => { //para regresar cuando le de en cancelar
-    navigate('/capacitaciones');
+  const handleAdd = () => {
+    //para regresar cuando le de en cancelar
+    navigate("/capacitaciones");
   };
 
   return (
     <div className="container">
       {/* Barra lateral */}
-      <div className="sidebar">      
-        <img src={logoEmpresa} alt="Logo Empresa" className="logo-image" />     
+      <div className="sidebar">
+        <img src={logoEmpresa} alt="Logo Empresa" className="logo-image" />
       </div>
 
       <main className="main-content">
@@ -131,7 +133,7 @@ const AddCapacitacion = () => {
                   type="radio"
                   name="modalidad"
                   id="presencial"
-                  checked={formData.modalidad === 'presencial'}
+                  checked={formData.modalidad === "presencial"}
                   onChange={handleModalidadChange}
                 />
                 <label htmlFor="presencial">Presencial</label>
@@ -141,7 +143,7 @@ const AddCapacitacion = () => {
                   type="radio"
                   name="modalidad"
                   id="virtual"
-                  checked={formData.modalidad === 'virtual'}
+                  checked={formData.modalidad === "virtual"}
                   onChange={handleModalidadChange}
                 />
                 <label htmlFor="virtual">Virtual</label>
@@ -151,7 +153,7 @@ const AddCapacitacion = () => {
                   type="radio"
                   name="modalidad"
                   id="hibrido"
-                  checked={formData.modalidad === 'hibrido'}
+                  checked={formData.modalidad === "hibrido"}
                   onChange={handleModalidadChange}
                 />
                 <label htmlFor="hibrido">Híbrido</label>
@@ -194,8 +196,16 @@ const AddCapacitacion = () => {
           </div>
 
           <div className="button-group">
-            <button type="button" className="button-cancel" onClick={handleCancel}>Cancelar</button>
-            <button type="submit" className="button-save">Guardar</button>
+            <button
+              type="button"
+              className="button-cancel"
+              onClick={handleCancel}
+            >
+              Cancelar
+            </button>
+            <button type="submit" className="button-save">
+              Guardar
+            </button>
           </div>
         </form>
 

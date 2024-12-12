@@ -1,28 +1,28 @@
 // backend/routes/capacitaciones.js
-const express = require('express');
-const { pool } = require('../config/db');
+const express = require("express");
+const { pool } = require("../config/db");
 const router = express.Router();
 
-router.get('/capacitaciones', (req, res) => {
-
+router.get("/capacitaciones", (req, res) => {
   pool.getConnection((err, connection) => {
     if (err) {
-      console.error('Error al obtener conexión:', err);
+      console.error("Error al obtener conexión:", err);
       return res.status(500).json({
         status: "error",
-        message: "Error de conexión a la base de datos"
+        message: "Error de conexión a la base de datos",
       });
     }
 
-    const sql = "SELECT capacitacion_id, nombre, area, fecha_inicio, estado, duracion_horas FROM capacitaciones";
+    const sql =
+      "SELECT capacitacion_id, nombre, area, fecha_inicio, estado, duracion_horas FROM capacitaciones";
     connection.query(sql, (error, results) => {
       connection.release();
 
       if (error) {
-        console.error('Error en consulta:', error);
+        console.error("Error en consulta:", error);
         return res.status(500).json({
           status: "error",
-          message: "Error en el servidor"
+          message: "Error en el servidor",
         });
       }
 
@@ -31,20 +31,17 @@ router.get('/capacitaciones', (req, res) => {
   });
 });
 
-
-
-
-
-
-
 // New route for searching capacitaciones
-router.get('/capacitaciones/search', (req, res) => {
+router.get("/capacitaciones/search", (req, res) => {
   const { query } = req.query;
 
   pool.getConnection((err, connection) => {
     if (err) {
-      console.error('Error al obtener conexión:', err);
-      return res.status(500).json({ status: "error", message: "Error de conexión a la base de datos" });
+      console.error("Error al obtener conexión:", err);
+      return res.status(500).json({
+        status: "error",
+        message: "Error de conexión a la base de datos",
+      });
     }
 
     // Parameterized query to search across multiple columns
@@ -60,31 +57,33 @@ router.get('/capacitaciones/search', (req, res) => {
     // Add wildcard for partial matching
     const searchTerm = `%${query}%`;
 
-    connection.query(sql, [searchTerm, searchTerm, searchTerm], (error, results) => {
-      connection.release();
+    connection.query(
+      sql,
+      [searchTerm, searchTerm, searchTerm],
+      (error, results) => {
+        connection.release();
 
-      if (error) {
-        console.error('Error en consulta de búsqueda:', error);
-        return res.status(500).json({ status: "error", message: "Error en el servidor" });
+        if (error) {
+          console.error("Error en consulta de búsqueda:", error);
+          return res
+            .status(500)
+            .json({ status: "error", message: "Error en el servidor" });
+        }
+
+        res.json(results);
       }
-
-      res.json(results);
-    });
+    );
   });
 });
 
-
-
-
-
 // endpoint para obtener estadísticas
-router.get('/capacitaciones/stats', (req, res) => {
+router.get("/capacitaciones/stats", (req, res) => {
   pool.getConnection((err, connection) => {
     if (err) {
-      console.error('Error al obtener conexión:', err);
+      console.error("Error al obtener conexión:", err);
       return res.status(500).json({
         status: "error",
-        message: "Error de conexión a la base de datos"
+        message: "Error de conexión a la base de datos",
       });
     }
 
@@ -100,10 +99,10 @@ router.get('/capacitaciones/stats', (req, res) => {
       connection.release();
 
       if (error) {
-        console.error('Error en consulta:', error);
+        console.error("Error en consulta:", error);
         return res.status(500).json({
           status: "error",
-          message: "Error en el servidor"
+          message: "Error en el servidor",
         });
       }
 
