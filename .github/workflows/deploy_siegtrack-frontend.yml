@@ -23,12 +23,15 @@ jobs:
 
       - name: npm install and build
         run: |
-          npm install
+          npm ci
           npm run build
 
       - name: Prepare for deployment
         run: |
           cp public/web.config dist/
+
+      - name: List dist contents
+        run: ls -la dist/
 
       - name: Zip artifact for deployment
         run: |
