@@ -29,6 +29,7 @@ jobs:
       - name: Prepare for deployment
         run: |
           cp public/web.config dist/
+          cp serve.js dist/
 
       - name: List dist contents
         run: ls -la dist/
