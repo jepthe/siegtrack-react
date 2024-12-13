@@ -26,6 +26,10 @@ jobs:
           npm install
           npm run build
 
+      - name: Prepare for deployment
+        run: |
+          cp public/web.config dist/
+
       - name: Zip artifact for deployment
         run: |
           cd dist
