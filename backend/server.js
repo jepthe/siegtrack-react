@@ -30,6 +30,11 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
+// Ruta raíz
+app.get('/', (req, res) => {
+  res.json({ message: 'SiegTrack API' });
+});
+
 // Rutas
 app.use("/auth", authRoutes);
 app.use("/cap", capacitacionesRoutes);

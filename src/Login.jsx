@@ -7,6 +7,7 @@ import "./Login.css";
 import logo from "./assets/srRed.png";
 import eyeIcon from "./assets/ojo.png";
 import { useUser } from "./context/UserContext"; // global
+import config from './config/config';
 
 function Login() {
   const [usuario, setUsuario] = useState("");
@@ -21,7 +22,7 @@ function Login() {
     e.preventDefault();
 
     try {
-      const response = await axios.post("http://localhost:5002/auth/login", {
+      const response = await axios.post(`${config.apiUrl}/auth/login`, {
         usuario,
         password,
       });
