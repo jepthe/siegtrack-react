@@ -20,7 +20,7 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    console.log('Intentando conectar a:', `${config.apiUrl}/auth/login`); // Para debug
     try {
       const response = await axios.post(`${config.apiUrl}/auth/login`, {
         usuario,
